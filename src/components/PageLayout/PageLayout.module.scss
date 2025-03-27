@@ -1,0 +1,13 @@
+@use "styles/mixins";
+
+.main {
+  flex-grow: 1;
+  padding-top: var(--space-xl);
+
+  @include mixins.media("lg") {
+    padding-top: var(--space-m);
+  }
+  @include mixins.media("md") {
+    padding-top: var(--space-xs);
+  }
+}

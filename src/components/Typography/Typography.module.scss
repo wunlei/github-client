@@ -1,0 +1,140 @@
+@use "styles/mixins";
+
+.text {
+  font-weight: 400;
+  color: inherit;
+  --line-height: 1em;
+}
+
+.textInline {
+  display: inline-block;
+}
+
+.view-title {
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 48px;
+  --line-height: 1.091em;
+
+  @include mixins.media("xl") {
+    font-size: 40px;
+    line-height: 44px;
+  }
+
+  @include mixins.media("lg") {
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  @include mixins.media("md") {
+    font-size: 32px;
+    line-height: 46px;
+  }
+  @include mixins.media("sm") {
+    font-size: 28px;
+    line-height: 32px;
+  }
+}
+
+.view-button {
+  font-size: 18px;
+  line-height: 18px;
+  --line-height: 1em;
+}
+
+.view-p-20 {
+  font-size: 20px;
+  line-height: 24px;
+  --line-height: 1.2em;
+
+  @include mixins.media("lg") {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  @include mixins.media("sm") {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+.view-p-18 {
+  font-size: 18px;
+  line-height: 22px;
+  --line-height: 1.222em;
+
+  @include mixins.media("md") {
+    font-size: 16px;
+    line-height: 20px;
+  }
+  @include mixins.media("sm") {
+    font-size: 15px;
+    line-height: 19px;
+  }
+}
+
+.view-p-16 {
+  font-size: 16px;
+  line-height: 20px;
+  --line-height: 1.25em;
+
+  @include mixins.media("lg") {
+    font-size: 15px;
+    line-height: 19px;
+  }
+
+  @include mixins.media("md") {
+    font-size: 14px;
+    line-height: 18px;
+  }
+}
+
+.view-p-14 {
+  font-size: 14px;
+  line-height: 18px;
+  --line-height: 1.286em;
+}
+
+.weight-normal {
+  font-weight: 400;
+}
+
+.weight-medium {
+  font-weight: 500;
+}
+
+.weight-bold {
+  font-weight: 700;
+}
+
+.color-primary {
+  color: var(--text-primary);
+}
+
+.color-secondary {
+  color: var(--text-secondary);
+}
+
+.color-accent {
+  color: var(--text-accent);
+}
+
+@supports not (-webkit-line-clamp: 1) {
+  .maxLines {
+    display: block;
+    max-height: calc(var(--line-height) * var(--max-lines));
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
+}
+
+@supports (-webkit-line-clamp: 1) {
+  .maxLines {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: var(--max-lines);
+    line-clamp: var(--max-lines);
+    -webkit-box-orient: vertical;
+  }
+}
