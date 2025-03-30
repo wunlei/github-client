@@ -1,0 +1,17 @@
+@use "styles/mixins";
+
+.contributors {
+  @include mixins.space-y(var(--space-xxs));
+}
+
+.contributorList {
+  margin: 0;
+  padding: 0;
+  @include mixins.space-y(var(--space-xxs));
+}
+
+.contributor {
+  display: flex;
+  align-items: center;
+  @include mixins.space-x(var(--space-xxs));
+}
