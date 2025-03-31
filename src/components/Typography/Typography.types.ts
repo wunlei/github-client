@@ -8,4 +8,5 @@ export type TypographyProps = {
   color?: 'primary' | 'secondary' | 'accent';
   maxLines?: number;
   inline?: boolean;
+  align?: 'start' | 'end' | 'center' | 'justify';
 } & PropsWithChildren;

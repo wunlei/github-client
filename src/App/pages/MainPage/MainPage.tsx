@@ -41,7 +41,7 @@ const MainPage: React.FC = () => {
   return (
     <PageLayout className={s.page}>
       <div className={s.content}>
-        <Typography view="title" tag="h1" className={s.title}>
+        <Typography view="title" tag="h1" align="center">
           List of organization repositories
         </Typography>
         <div className={s.filters}>

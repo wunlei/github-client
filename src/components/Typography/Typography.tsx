@@ -13,6 +13,7 @@ const Typography: React.FC<TypographyProps> = ({
   color,
   maxLines,
   inline,
+  align,
   ...props
 }) => {
   const style = (maxLines ? { '--max-lines': maxLines } : {}) as React.CSSProperties;
@@ -26,6 +27,7 @@ const Typography: React.FC<TypographyProps> = ({
         s[`view-${view}`],
         s[`weight-${weight}`],
         s[`color-${color}`],
+        s[`align-${align}`],
         maxLines && s.maxLines,
         inline && s.textInline,
         className,
