@@ -1,0 +1,31 @@
+.container {
+  position: relative;
+  max-width: fit-content;
+}
+
+.options {
+  position: absolute;
+  bottom: calc(-100% - var(--space-xxs));
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: var(--border-radius);
+  background-color: var(--color-white);
+  box-shadow: var(--box-shadow);
+  list-style: none;
+}
+
+.option {
+  padding: var(--space-s) var(--space-xs);
+  cursor: pointer;
+}
+
+.option:hover {
+  color: var(--text-secondary);
+}
+
+.optionSelected {
+  color: var(--text-accent);
+}

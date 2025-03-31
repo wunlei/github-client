@@ -1,0 +1,45 @@
+@use "styles/mixins";
+
+.languages {
+  @include mixins.space-y(var(--space-xxs));
+}
+.percentageBar {
+  display: flex;
+  height: 8px;
+  border-radius: 5px;
+  background-color: var(--color-gray-200);
+  overflow: hidden;
+  @include mixins.space-x(1px);
+}
+
+.percentageBarItem {
+  background-color: var(--color-lang, var(--color-brand));
+}
+
+.langList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xxs);
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  @include mixins.media("md") {
+    grid-template-columns: 1fr;
+  }
+}
+
+.indicator {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+  background-color: var(--color-lang, var(--color-brand));
+}
+
+.langItem {
+  display: flex;
+  align-items: center;
+  @include mixins.space-x(var(--space-xxs));
+}

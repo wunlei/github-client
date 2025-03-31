@@ -1,0 +1,31 @@
+@use "sass:map";
+
+$breakpoints: (
+  "sm": 640px,
+  "md": 768px,
+  "lg": 1024px,
+  "xl": 1280px,
+  "xxl": 1563px,
+);
+
+@mixin media($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (max-width: map.get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "No such key: `#{$breakpoint}`. Available breakpoints: #{map.keys($breakpoints)}.";
+  }
+}
+
+@mixin space-x($space) {
+  & > :not(:last-child) {
+    margin-right: $space;
+  }
+}
+
+@mixin space-y($space) {
+  & > :not(:last-child) {
+    margin-bottom: $space;
+  }
+}

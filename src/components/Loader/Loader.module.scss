@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  color: var(--color-brand);
+  transform: rotate(-13deg);
+}
+
+.container-size-l {
+  width: 60px;
+  height: 60px;
+}
+
+.container-size-m {
+  width: 48px;
+  height: 48px;
+}
+
+.container-size-s {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-size-l {
+  --size: 40px;
+}
+
+.icon-size-m {
+  --size: 32px;
+}
+
+.icon-size-s {
+  --size: 16px;
+}
+
+.loader {
+  width: var(--size, 40px);
+  height: var(--size, 40px);
+  color: inherit;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
