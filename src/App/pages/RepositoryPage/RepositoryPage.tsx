@@ -11,6 +11,7 @@ import PageLayout from 'components/PageLayout';
 import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import ChainIcon from 'components/icons/ChainIcon';
+import { ROUTES } from 'config/router';
 import Contributors from 'pages/RepositoryPage/components/Contributors';
 import StatsItem from 'pages/RepositoryPage/components/StatsItem';
 import Languages from './components/Languages/Languages';
@@ -27,7 +28,7 @@ const RepositoryPage: React.FC = () => {
 
   useEffect(() => {
     if (!owner || !repo) {
-      navigate('/404');
+      navigate(ROUTES.notFound);
       return;
     }
 
@@ -76,7 +77,7 @@ const RepositoryPage: React.FC = () => {
     <PageLayout>
       <article className={s.content}>
         <div className={s.header}>
-          <Link to={'/'}>
+          <Link to={ROUTES.home}>
             <ArrowDownIcon width={32} height={32} color="accent" className={s.arrowBack} />
           </Link>
 

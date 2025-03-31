@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import Card from 'components/Card';
 import Typography from 'components/Typography';
 import StarIcon from 'components/icons/StarIcon';
+import { ROUTES } from 'config/router';
 import { formatDate } from 'utils/utils';
 import { ListProps } from './List.types';
 import s from './List.module.scss';
@@ -13,7 +14,7 @@ const List: React.FC<ListProps> = ({ repos }) => {
     <div className={s.list}>
       {!repos.length && <Typography>No repositories found</Typography>}
       {repos.map((el) => (
-        <Link key={el.id} to={`/repos/${el.owner.login}/${el.name}`}>
+        <Link key={el.id} to={`${ROUTES.repos}/${el.owner.login}/${el.name}`}>
           <Card
             className={s.listCard}
             image={el.owner.avatar_url}

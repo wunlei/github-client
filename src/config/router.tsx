@@ -5,14 +5,20 @@ import MainPage from 'pages/MainPage';
 import NotFound from 'pages/NotFound/NotFound';
 import RepositoryPage from 'pages/RepositoryPage';
 
+export const ROUTES = {
+  home: '/',
+  notFound: '/404',
+  repos: '/repos',
+};
+
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROUTES.home,
     element: <App />,
     errorElement: <RouteErrorBoundary />,
     children: [
       {
-        path: '/',
+        path: ROUTES.home,
         element: <MainPage />,
       },
     ],
@@ -23,7 +29,7 @@ const router = createBrowserRouter([
     errorElement: <RouteErrorBoundary />,
   },
   {
-    path: '404',
+    path: ROUTES.notFound,
     element: <NotFound />,
   },
   {
