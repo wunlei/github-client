@@ -1,6 +1,6 @@
 import c from 'classnames';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState , memo } from 'react';
 import { getRepoLanguages } from 'api/api';
 import { RepoLanguages } from 'api/types';
 import Typography from 'components/Typography';
@@ -51,4 +51,4 @@ const Languages: React.FC<LanguagesProps> = ({ repo, owner }) => {
   );
 };
 
-export default Languages;
+export default memo(Languages);

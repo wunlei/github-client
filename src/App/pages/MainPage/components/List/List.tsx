@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router';
 import Card from 'components/Card';
 import Typography from 'components/Typography';
@@ -34,4 +35,4 @@ const List: React.FC<ListProps> = ({ repos }) => {
   );
 };
 
-export default List;
+export default memo(List);

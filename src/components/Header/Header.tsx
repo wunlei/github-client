@@ -1,5 +1,6 @@
 import c from 'classnames';
 import * as React from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router';
 import Typography from 'components/Typography';
 import LogoIcon from 'components/icons/LogoIcon';
@@ -23,4 +24,4 @@ const Header: React.FC<HeaderProps> = ({ className, ...props }) => {
   );
 };
 
-export default Header;
+export default memo(Header);

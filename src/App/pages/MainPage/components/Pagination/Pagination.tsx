@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { memo } from 'react';
 import Button from 'components/Button';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import { PaginationProps } from './Pagination.types';
@@ -23,4 +24,4 @@ const Pagination: React.FC<PaginationProps> = ({ currPage, isLastPage, onChange 
   );
 };
 
-export default Pagination;
+export default memo(Pagination);

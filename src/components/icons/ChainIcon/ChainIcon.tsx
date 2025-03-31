@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { memo } from 'react';
 import Icon, { IconProps } from '../Icon';
 
 const ChainIcon: React.FC<IconProps> = (props) => (
@@ -14,4 +15,4 @@ const ChainIcon: React.FC<IconProps> = (props) => (
   </Icon>
 );
 
-export default ChainIcon;
+export default memo(ChainIcon);

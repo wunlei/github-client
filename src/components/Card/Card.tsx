@@ -1,5 +1,6 @@
 import c from 'classnames';
 import * as React from 'react';
+import { memo } from 'react';
 import Typography from 'components/Typography';
 import { CardProps } from './Card.types';
 import s from './Card.module.scss';
@@ -26,7 +27,6 @@ const Card: React.FC<CardProps> = ({
             {captionSlot}
           </Typography>
         )}
-
         <Typography tag="h3" view="p-20" weight="medium" color="primary" maxLines={2}>
           {title}
         </Typography>
@@ -34,7 +34,6 @@ const Card: React.FC<CardProps> = ({
           {subtitle}
         </Typography>
       </div>
-
       <div className={s.footer}>
         {contentSlot && (
           <div className={s.contentSlot}>
@@ -49,4 +48,4 @@ const Card: React.FC<CardProps> = ({
   </div>
 );
 
-export default Card;
+export default memo(Card);

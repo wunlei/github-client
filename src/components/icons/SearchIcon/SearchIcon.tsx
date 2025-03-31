@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { memo } from 'react';
 import Icon, { IconProps } from '../Icon';
 
 const SearchIcon: React.FC<IconProps> = (props) => (
@@ -10,4 +11,4 @@ const SearchIcon: React.FC<IconProps> = (props) => (
   </Icon>
 );
 
-export default SearchIcon;
+export default memo(SearchIcon);

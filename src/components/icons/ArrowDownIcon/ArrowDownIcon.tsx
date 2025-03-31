@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { memo } from 'react';
 import Icon, { IconProps } from '../Icon';
 
 const ArrowDownIcon: React.FC<IconProps> = (props) => (
@@ -12,4 +13,4 @@ const ArrowDownIcon: React.FC<IconProps> = (props) => (
   </Icon>
 );
 
-export default ArrowDownIcon;
+export default memo(ArrowDownIcon);

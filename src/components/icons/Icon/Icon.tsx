@@ -1,5 +1,6 @@
 import c from 'classnames';
 import * as React from 'react';
+import { memo } from 'react';
 import { IconProps } from './Icon.types';
 import s from './Icon.module.scss';
 
@@ -24,4 +25,4 @@ const Icon: React.FC<React.PropsWithChildren<IconProps>> = ({
   </svg>
 );
 
-export default Icon;
+export default memo(Icon);

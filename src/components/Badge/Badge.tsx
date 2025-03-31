@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { memo } from 'react';
 import { BadgeProps } from './Badge.types';
 import s from './Badge.module.scss';
 
@@ -10,4 +11,4 @@ const Badge: React.FC<BadgeProps> = ({ children, ...props }) => {
   );
 };
 
-export default Badge;
+export default memo(Badge);

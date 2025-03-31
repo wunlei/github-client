@@ -1,5 +1,6 @@
 import c from 'classnames';
 import * as React from 'react';
+import { memo } from 'react';
 import CheckIcon from '../icons/CheckIcon';
 import { CheckBoxProps } from './Checkbox.types';
 import s from './Checkbox.module.scss';
@@ -14,9 +15,8 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checked, disabled, className, onCha
       onChange={(e) => onChange(e.target.checked)}
       {...props}
     />
-
     <CheckIcon color="accent" className={s.checkIcon} width={40} height={40} />
   </label>
 );
 
-export default CheckBox;
+export default memo(CheckBox);

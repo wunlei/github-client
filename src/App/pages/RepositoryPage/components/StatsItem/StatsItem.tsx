@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { memo } from 'react';
 import Typography from 'components/Typography';
 import ForkIcon from 'components/icons/ForkIcon';
 import StarIcon from 'components/icons/StarIcon';
@@ -23,4 +24,4 @@ const StatsItem: React.FC<StatsItemProps> = ({ number, type }) => {
   );
 };
 
-export default StatsItem;
+export default memo(StatsItem);
