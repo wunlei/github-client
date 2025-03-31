@@ -15,7 +15,6 @@
 .header {
   display: flex;
   flex-wrap: wrap;
-
   align-items: center;
   @include mixins.space-x(var(--space-m));
 }
