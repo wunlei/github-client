@@ -1,3 +1,3 @@
 import { PropsWithChildren } from 'react';
 
-export type CounterProps = {} & PropsWithChildren;
+export type CounterProps = PropsWithChildren;

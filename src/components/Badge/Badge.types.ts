@@ -1,3 +1,3 @@
 import { PropsWithChildren } from 'react';
 
-export type BadgeProps = {} & PropsWithChildren;
+export type BadgeProps = PropsWithChildren;
