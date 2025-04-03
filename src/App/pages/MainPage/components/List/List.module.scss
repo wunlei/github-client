@@ -26,7 +26,8 @@
 
 .cardHeader {
   display: flex;
-  gap: var(--space-s);
+  flex-wrap: wrap;
+  column-gap: var(--space-s);
 }
 
 .listCard {

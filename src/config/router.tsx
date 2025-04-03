@@ -5,31 +5,34 @@ import MainPage from 'pages/MainPage';
 import NotFound from 'pages/NotFound/NotFound';
 import RepositoryPage from 'pages/RepositoryPage';
 
-export const ROUTES = {
+export const routes = {
   home: '/',
   notFound: '/404',
-  repos: '/repos',
+  repos: {
+    mask: 'repos/:owner/:repo',
+    create: (owner: string, repo: string) => `repos/${owner}/${repo}`,
+  },
 };
 
 const router = createBrowserRouter([
   {
-    path: ROUTES.home,
+    path: routes.home,
     element: <App />,
     errorElement: <RouteErrorBoundary />,
     children: [
       {
-        path: ROUTES.home,
+        path: routes.home,
         element: <MainPage />,
       },
     ],
   },
   {
-    path: 'repos/:owner/:repo',
+    path: routes.repos.mask,
     element: <RepositoryPage />,
     errorElement: <RouteErrorBoundary />,
   },
   {
-    path: ROUTES.notFound,
+    path: routes.notFound,
     element: <NotFound />,
   },
   {
