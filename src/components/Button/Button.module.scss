@@ -13,8 +13,8 @@
   transition: background-color 0.25s;
 
   &:hover {
-    background-color: var(--color-brand-hover);
     color: var(--color-white);
+    background-color: var(--color-brand-hover);
   }
 
   &:active {
@@ -37,17 +37,17 @@
 }
 
 .ghost {
-  background-color: transparent;
   color: var(--text-secondary);
+  background-color: transparent;
 
   &:hover {
-    background-color: transparent;
     color: var(--text-primary);
+    background-color: transparent;
   }
 
   &:active {
-    background-color: transparent;
     color: var(--text-primary);
+    background-color: transparent;
   }
 }
 

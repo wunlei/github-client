@@ -5,25 +5,25 @@
 }
 
 .btn {
+  padding: 0;
+  border: none;
+  border-radius: var(--border-radius);
   background-color: transparent;
   cursor: pointer;
-  border: none;
-  padding: 0;
-  border-radius: var(--border-radius);
 
   &:hover {
-    transition: background-color 0.25s;
     background-color: var(--color-brand-hover);
+    transition: background-color 0.25s;
   }
 
   &:active {
-    background-color: var(--color-brand-active);
     color: var(--color-white);
+    background-color: var(--color-brand-active);
   }
 
   &:disabled {
-    pointer-events: none;
     color: var(--color-gray-500);
+    pointer-events: none;
   }
 }
 
@@ -32,17 +32,17 @@
 }
 
 .btnActive {
-  background-color: var(--color-brand);
   color: var(--color-white);
+  background-color: var(--color-brand);
 }
 
 .item {
-  height: 42px;
-  min-width: 38px;
-  padding: 0 6px;
   display: inline-flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  min-width: 38px;
+  height: 42px;
+  padding: 0 6px;
 }
 
 .arrowBtnLeft {
