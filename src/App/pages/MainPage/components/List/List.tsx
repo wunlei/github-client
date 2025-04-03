@@ -17,16 +17,16 @@ const List: React.FC<ListProps> = ({ repos }) => {
         <Link key={el.id} to={routes.repos.create(el.owner.login, el.name)}>
           <Card
             className={s.listCard}
-            image={el.owner.avatarUrl}
+            image={el.owner.avatar_url}
             title={el.name}
             subtitle={el.description || ''}
             captionSlot={
               <div className={s.cardHeader}>
                 <div className={s.starsContainer}>
                   <StarIcon width={14} height={14} className={s.starIcon} />
-                  <span>{el.stargazersCount}</span>
+                  <span>{el.stargazers_count}</span>
                 </div>
-                <div>Updated on {formatDate(el.updatedAt)}</div>
+                <div>Updated on {formatDate(el.updated_at)}</div>
               </div>
             }
           ></Card>
