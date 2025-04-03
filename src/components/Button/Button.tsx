@@ -5,9 +5,21 @@ import Loader from 'components/Loader';
 import { ButtonProps } from './Button.types';
 import s from './Button.module.scss';
 
-const Button: React.FC<ButtonProps> = ({ loading, disabled, className, children, ...props }) => {
+const Button: React.FC<ButtonProps> = ({
+  loading,
+  disabled,
+  variant = 'primary',
+  size = 'normal',
+  className,
+  children,
+  ...props
+}) => {
   return (
-    <button disabled={loading || disabled} className={c(s.btn, disabled && s.btnDisabled, className)} {...props}>
+    <button
+      disabled={loading || disabled}
+      className={c(s.btn, disabled && s.btnDisabled, s[variant], s[`size-${size}`], className)}
+      {...props}
+    >
       {loading && <Loader size="s" className={s.loader} />}
       {children}
     </button>
