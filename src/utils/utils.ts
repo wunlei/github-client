@@ -20,3 +20,11 @@ export const getRange = (start: number, end: number) => {
   const length = end - start + 1;
   return Array.from({ length }, (_, i) => start + i);
 };
+
+export const paginateArray = <T>(array: T[], perPage: number): T[][] => {
+  if (!array.length) {
+    return [[]];
+  }
+  const pages = Math.ceil(array.length / perPage);
+  return Array.from({ length: pages }, (_v, i) => array.slice(i * perPage, i * perPage + perPage));
+};
