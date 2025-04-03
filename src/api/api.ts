@@ -18,7 +18,7 @@ const axiosInstance = axios.create({
   baseURL: 'https://api.github.com/',
   headers: {
     'X-GitHub-Api-Version': '2022-11-28',
-    Authorization: AUTH_TOKEN,
+    Authorization: `Bearer ${AUTH_TOKEN}`,
     Accept: 'application/vnd.github+json',
   },
 });
@@ -40,6 +40,7 @@ export async function getReposByOrg({ org, page = 1, per_page = 3 }: GetReposByO
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 }
 
@@ -52,6 +53,7 @@ export async function getSingleRepo({ repo, owner }: GetSingleRepoParams) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 }
 
@@ -64,6 +66,7 @@ export async function getRepoLanguages({ repo, owner }: GetRepoLanguagesParams) 
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 }
 
@@ -78,6 +81,7 @@ export async function getRepoContributors({ repo, owner }: GetRepoContributorsPa
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 }
 
@@ -89,6 +93,7 @@ export async function getUser(login: string) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 }
 
@@ -107,5 +112,6 @@ export async function getReadme({ repo, owner }: GetRepoReadmeParams) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 }
