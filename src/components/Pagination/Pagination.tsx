@@ -7,7 +7,7 @@ import { getRange } from 'utils/utils';
 import { PaginationProps } from './Pagination.types';
 import s from './Pagination.module.scss';
 
-const Pagination: React.FC<PaginationProps> = ({ count = 3, offset = 3, current, onChange }) => {
+const Pagination: React.FC<PaginationProps> = ({ count, offset = 3, current, onChange }) => {
   const firstPage = 1;
 
   const [currPage, setCurrPage] = useState(current || firstPage);
