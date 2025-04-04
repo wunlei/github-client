@@ -5,11 +5,11 @@ import {
   GetRepoReadmeParams,
   GetReposByOrgParams,
   GetSingleRepoParams,
-  Repo,
-  RepoContributor,
-  RepoLanguages,
-  Repos,
-  User,
+  RepoApi,
+  RepoContributorApi,
+  RepoLanguagesApi,
+  ReposApi,
+  UserApi,
 } from './types';
 
 const AUTH_TOKEN: string | undefined = import.meta.env.AUTH_TOKEN;
@@ -23,15 +23,13 @@ const axiosInstance = axios.create({
   },
 });
 
-export async function getReposByOrg({ org, page = 1, per_page = 3 }: GetReposByOrgParams) {
+export async function getReposByOrg({ org, type = 'all' }: GetReposByOrgParams) {
   try {
-    const response = await axiosInstance.request<Repos>({
+    const response = await axiosInstance.request<ReposApi>({
       url: `/orgs/${org}/repos`,
       method: 'get',
       params: {
-        type: 'all',
-        page,
-        per_page,
+        type,
       },
     });
 
@@ -46,7 +44,7 @@ export async function getReposByOrg({ org, page = 1, per_page = 3 }: GetReposByO
 
 export async function getSingleRepo({ repo, owner }: GetSingleRepoParams) {
   try {
-    const response = await axiosInstance.get<Repo>(`/repos/${owner}/${repo}`);
+    const response = await axiosInstance.get<RepoApi>(`/repos/${owner}/${repo}`);
 
     return response.data;
   } catch (error) {
@@ -59,7 +57,7 @@ export async function getSingleRepo({ repo, owner }: GetSingleRepoParams) {
 
 export async function getRepoLanguages({ repo, owner }: GetRepoLanguagesParams) {
   try {
-    const response = await axiosInstance.get<RepoLanguages>(`/repos/${owner}/${repo}/languages`);
+    const response = await axiosInstance.get<RepoLanguagesApi>(`/repos/${owner}/${repo}/languages`);
 
     return response.data;
   } catch (error) {
@@ -72,7 +70,7 @@ export async function getRepoLanguages({ repo, owner }: GetRepoLanguagesParams) 
 
 export async function getRepoContributors({ repo, owner }: GetRepoContributorsParams) {
   try {
-    const responseContributors = await axiosInstance.get<RepoContributor[]>(`/repos/${owner}/${repo}/contributors`);
+    const responseContributors = await axiosInstance.get<RepoContributorApi[]>(`/repos/${owner}/${repo}/contributors`);
 
     const usersPromises = responseContributors.data.map((data) => getUser(data.login));
 
@@ -87,7 +85,7 @@ export async function getRepoContributors({ repo, owner }: GetRepoContributorsPa
 
 export async function getUser(login: string) {
   try {
-    const response = await axiosInstance.get<User>(`/users/${login}`);
+    const response = await axiosInstance.get<UserApi>(`/users/${login}`);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {

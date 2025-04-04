@@ -1,8 +1,6 @@
-import { RepoLanguages } from 'api/types';
+import { RepoLanguagesApi } from 'api/types';
 
-export const formatDate = (isoDate: string) => {
-  const date = new Date(isoDate);
-
+export const formatDate = (date: Date) => {
   return date.toLocaleDateString('en-GB', {
     month: 'short',
     day: 'numeric',
@@ -10,7 +8,7 @@ export const formatDate = (isoDate: string) => {
   });
 };
 
-export const getLangPercents = (languages: RepoLanguages) => {
+export const getLangPercents = (languages: RepoLanguagesApi) => {
   const sum = Object.values(languages).reduce((acc, curr) => acc + curr, 0);
 
   return Object.entries(languages).map(([lang, count]) => [lang, ((count * 100) / sum).toFixed(1)]);

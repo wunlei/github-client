@@ -1,5 +1,5 @@
-import { Repos } from 'api/types';
+import { RepoModel } from 'store/models/api/repo';
 
 export type ListProps = {
-  repos: Repos;
+  repos: RepoModel[];
 };
