@@ -1,52 +1,46 @@
+import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router';
-import { getReadme, getSingleRepo } from 'api/api';
-import { Repo } from 'api/types';
+import { useEffect } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import Avatar from 'components/Avatar';
 import Badge from 'components/Badge';
+import Button from 'components/Button';
 import ErrorMsg from 'components/ErrorMsg';
 import Loader from 'components/Loader';
 import PageLayout from 'components/PageLayout';
 import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import ChainIcon from 'components/icons/ChainIcon';
-import { ROUTES } from 'config/router';
+import { topicUrl } from 'config/api';
+import { routes } from 'config/router';
 import Contributors from 'pages/RepositoryPage/components/Contributors';
 import StatsItem from 'pages/RepositoryPage/components/StatsItem';
+import { RepositoryPageStore } from 'store/RepositoryPageStore';
+import { useLocalStore } from 'store/hooks/useLocalStore';
 import Languages from './components/Languages/Languages';
 import s from './RepositoryPage.module.scss';
 
-const RepositoryPage: React.FC = () => {
+const RepositoryPage: React.FC = observer(() => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { owner, repo } = useParams();
-  const [repoData, setRepoData] = useState<Repo>();
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const [readme, setReadme] = useState('');
+  const store = useLocalStore(() => new RepositoryPageStore());
+
+  const { isLoading, isError, readme, repoData, fetchReadme, fetchRepo, setOrgName, setRepoName } = store;
 
   useEffect(() => {
     if (!owner || !repo) {
-      navigate(ROUTES.notFound);
+      navigate(routes.notFound);
       return;
     }
 
-    getSingleRepo({ repo, owner })
-      .then((data) => {
-        setRepoData(data);
-      })
-      .catch((error) => setError(error))
-      .finally(() => {
-        setIsLoading(false);
-      });
+    setOrgName(owner);
+    setRepoName(repo);
 
-    getReadme({ repo, owner }).then((data) => {
-      if (data) {
-        setReadme(data);
-      }
-    });
-  }, [navigate, owner, repo]);
+    fetchRepo();
+    fetchReadme();
+  }, [fetchReadme, fetchRepo, navigate, owner, repo, setOrgName, setRepoName]);
 
   if (!owner || !repo) {
     return null;
@@ -62,59 +56,80 @@ const RepositoryPage: React.FC = () => {
     );
   }
 
-  if (!repoData || error) {
+  if (isError) {
     return (
       <PageLayout>
-        <ErrorMsg message={error?.message} />
+        <ErrorMsg />
       </PageLayout>
     );
   }
 
-  const { forks_count, stargazers_count, watchers_count, html_url, topics } = repoData;
-  const { avatar_url } = repoData.owner;
+  if (!repoData) {
+    return null;
+  }
+
+  const { forksCount, stargazersCount, watchersCount, htmlUrl, topics } = repoData;
+  const { avatarUrl } = repoData.owner;
 
   return (
     <PageLayout>
       <article className={s.content}>
         <div className={s.header}>
-          <Link to={ROUTES.home}>
+          <Button
+            size="small"
+            variant="ghost"
+            onClick={() => {
+              if (location.key !== 'default') {
+                navigate(-1);
+              } else {
+                navigate(routes.home);
+              }
+            }}
+          >
             <ArrowDownIcon width={32} height={32} color="accent" className={s.arrowBack} />
-          </Link>
-
-          <Avatar src={avatar_url} alt={owner} />
+          </Button>
+          <Avatar src={avatarUrl} alt={owner} />
           <Typography view="title">{repo}</Typography>
         </div>
         <div className={s.main}>
-          <a href={html_url} className={s.link} target="_blank" rel="noreferrer">
+          <a href={htmlUrl} className={s.link} target="_blank" rel="noreferrer">
             <ChainIcon />
             <Typography className={s.linkText} view="p-16" weight="bold">
               {repo}
             </Typography>
           </a>
-          <div className={s.tags}>
-            {topics.map((topic) => (
-              <Badge key={topic}>{topic}</Badge>
-            ))}
-          </div>
+          {!!topics.length && (
+            <div className={s.tags}>
+              {topics.map((topic) => (
+                <Badge key={topic}>
+                  <a href={`${topicUrl}${topic}`} target="_blank" rel="noreferrer">
+                    {topic}
+                  </a>
+                </Badge>
+              ))}
+            </div>
+          )}
           <div className={s.statsContainer}>
-            <StatsItem type={'stars'} number={stargazers_count} />
-            <StatsItem type={'watchers'} number={watchers_count} />
-            <StatsItem type={'forks'} number={forks_count} />
+            <StatsItem type={'stars'} number={stargazersCount} />
+            <StatsItem type={'watchers'} number={watchersCount} />
+            <StatsItem type={'forks'} number={forksCount} />
           </div>
           <div className={s.contentFooter}>
-            <Languages repo={repo} owner={owner} />
-            <Contributors repo={repo} owner={owner} />
+            <Languages owner={owner} repo={repo} />
+            <Contributors owner={owner} repo={repo} />
           </div>
         </div>
-        <div className={s.readmeContainer}>
-          <Typography weight="bold" view="p-14">
-            README.md
-          </Typography>
-          <div dangerouslySetInnerHTML={{ __html: readme }}></div>
-        </div>
+        {readme && (
+          <div className={s.readmeContainer}>
+            <Typography weight="bold" view="p-14">
+              README.md
+            </Typography>
+            <div dangerouslySetInnerHTML={{ __html: readme }}></div>
+          </div>
+        )}
       </article>
     </PageLayout>
   );
-};
+});
 
 export default RepositoryPage;
