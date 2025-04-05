@@ -1,42 +1,98 @@
+import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import Pagination from 'App/pages/MainPage/components/Pagination';
-import { getReposByOrg } from 'api/api';
-import { Repos } from 'api/types';
-import Button from 'components/Button';
+import { useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router';
+import Dropdown from 'components/Dropdown';
+import { Option } from 'components/Dropdown/Dropdown.types';
 import ErrorMsg from 'components/ErrorMsg';
-import Input from 'components/Input';
 import Loader from 'components/Loader';
-import MultiDropdown from 'components/MultiDropdown';
 import PageLayout from 'components/PageLayout';
+import Pagination from 'components/Pagination';
+import Search from 'components/Search';
 import Typography from 'components/Typography';
-import SearchIcon from 'components/icons/SearchIcon';
 import List from 'pages/MainPage/components/List';
+import MainPageStore from 'store/MainPageStore';
+import { useLocalStore } from 'store/hooks/useLocalStore';
 import s from './MainPage.module.scss';
 
-const org = 'ktsstudio';
+const MainPage: React.FC = observer(() => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const store = useLocalStore(() => new MainPageStore());
 
-const MainPage: React.FC = () => {
-  const per_page = 9;
-  const [repos, setRepos] = useState<Repos>([]);
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [currPage, setCurrPage] = useState(1);
+  const {
+    isLoading,
+    isError,
+    orgName,
+    totalPages,
+    currPageNum,
+    reposOnCurrPage,
+    filterOptions,
+    filterSelectedOption,
+    setTypeFilter,
+    setOrgName,
+    fetchRepos,
+    setCurrPage,
+  } = store;
 
-  const handlePageChange = useCallback((n: number) => {
-    setCurrPage(n);
-  }, []);
+  const handleTypeChange = useCallback(
+    (e: Option) => {
+      setTypeFilter(e.key);
+      setSearchParams((prev) => {
+        prev.set('type', e.key);
+        return prev;
+      });
+    },
+    [setSearchParams, setTypeFilter],
+  );
+
+  const handlePageChange = useCallback(
+    (n: number) => {
+      setCurrPage(n);
+
+      setSearchParams((prev) => {
+        prev.set('page', `${n}`);
+        return prev;
+      });
+    },
+    [setCurrPage, setSearchParams],
+  );
+
+  const handleGetRepos = useCallback(
+    (org: string) => {
+      if (!org) {
+        return;
+      }
+      setOrgName(org);
+
+      setSearchParams((prev) => {
+        prev.set('org', org.trim());
+        return prev;
+      });
+
+      fetchRepos();
+    },
+    [fetchRepos, setOrgName, setSearchParams],
+  );
 
   useEffect(() => {
-    setIsLoading(true);
+    const type = searchParams.get('type');
+    if (type) {
+      setTypeFilter(type);
+    }
 
-    getReposByOrg({ org, per_page, page: currPage })
-      .then((repos) => setRepos(repos || []))
-      .catch((error) => setError(error))
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [currPage]);
+    const page = searchParams.get('page');
+
+    if (page && parseInt(page)) {
+      setCurrPage(parseInt(page));
+    }
+
+    const org = searchParams.get('org');
+
+    if (org) {
+      setOrgName(org);
+      fetchRepos();
+    }
+  }, [fetchRepos, searchParams, setCurrPage, setOrgName, setTypeFilter]);
 
   return (
     <PageLayout className={s.page}>
@@ -45,25 +101,25 @@ const MainPage: React.FC = () => {
           List of organization repositories
         </Typography>
         <div className={s.filters}>
-          <MultiDropdown className={s.dropdown} options={[]} value={[]} onChange={() => {}} getTitle={() => 'Type'} />
-          <div className={s.inputWrapper}>
-            <Input placeholder="Enter organization name" className={s.input} value={org} onChange={() => {}} />
-            <Button>
-              <SearchIcon className={s.btnIcon} />
-            </Button>
-          </div>
+          <Dropdown
+            className={s.dropdown}
+            options={filterOptions}
+            value={filterSelectedOption}
+            onChange={handleTypeChange}
+          />
+          <Search placeholder="Enter organization name" value={orgName} handleSearch={handleGetRepos} />
         </div>
         {isLoading && <Loader />}
-        {error && <ErrorMsg message={error.message} />}
-        {!isLoading && !error && (
+        {isError && <ErrorMsg />}
+        {!isLoading && !isError && (
           <>
-            <List repos={repos}></List>
-            <Pagination isLastPage={repos.length < per_page} currPage={currPage} onChange={handlePageChange} />
+            <List repos={reposOnCurrPage} />
+            <Pagination count={totalPages} current={currPageNum} onChange={handlePageChange} />
           </>
         )}
       </div>
     </PageLayout>
   );
-};
+});
 
 export default MainPage;
