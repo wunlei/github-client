@@ -6,7 +6,7 @@ import { normalizeRepo, RepoModel } from 'store/models/api/repo';
 
 type PrivateFields = '_meta' | '_orgName' | '_repoName' | '_repoData' | '_readme';
 
-export class RepositoryPageStore implements ILocalStore {
+class RepositoryPageStore implements ILocalStore {
   private _meta: MetaValue = META.initial;
   private _orgName = '';
   private _repoName = '';
@@ -97,3 +97,5 @@ export class RepositoryPageStore implements ILocalStore {
     this._readme = null;
   }
 }
+
+export default RepositoryPageStore;

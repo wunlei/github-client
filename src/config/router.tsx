@@ -4,6 +4,8 @@ import { RouteErrorBoundary } from 'components/ErrorBoundary';
 import MainPage from 'pages/MainPage';
 import NotFound from 'pages/NotFound/NotFound';
 import RepositoryPage from 'pages/RepositoryPage';
+import { MainPageStoreProvider } from 'store/MainPageStore';
+import { RepositoryPageStoreProvider } from 'store/RepositoryPageStore';
 
 export const routes = {
   home: '/',
@@ -22,13 +24,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: routes.home,
-        element: <MainPage />,
+        element: (
+          <MainPageStoreProvider>
+            <MainPage />
+          </MainPageStoreProvider>
+        ),
       },
     ],
   },
   {
     path: routes.repos.mask,
-    element: <RepositoryPage />,
+
+    element: (
+      <RepositoryPageStoreProvider>
+        <RepositoryPage />
+      </RepositoryPageStoreProvider>
+    ),
+
     errorElement: <RouteErrorBoundary />,
   },
   {
