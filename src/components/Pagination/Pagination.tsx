@@ -7,7 +7,7 @@ import { getRange } from 'utils/utils';
 import { PaginationProps } from './Pagination.types';
 import s from './Pagination.module.scss';
 
-const Pagination: React.FC<PaginationProps> = ({ count, offset = 3, current, onChange }) => {
+const Pagination: React.FC<PaginationProps> = ({ count, offset = 3, current, className, onChange }) => {
   const firstPage = 1;
 
   const [currPage, setCurrPage] = useState(current || firstPage);
@@ -43,7 +43,7 @@ const Pagination: React.FC<PaginationProps> = ({ count, offset = 3, current, onC
   }
 
   return (
-    <div className={s.container}>
+    <div className={c(s.container, className)}>
       <button
         className={c(s.item, s.btn)}
         disabled={currPage === firstPage}
