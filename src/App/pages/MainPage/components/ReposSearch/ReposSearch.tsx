@@ -6,9 +6,18 @@ import { ReposSearchProps } from './ReposSearch.types';
 
 const ReposSearch: React.FC<ReposSearchProps> = observer(({ onChange }) => {
   const store = useMainPageStore();
-  const { orgName } = store;
+  const { orgName, setOrgName, fetchRepos } = store;
 
-  return <Search placeholder="Enter organization name" value={orgName} handleSearch={onChange} />;
+  const handleGetRepos = (org: string) => {
+    if (!org) {
+      return;
+    }
+    setOrgName(org);
+    fetchRepos();
+    onChange(org);
+  };
+
+  return <Search placeholder="Enter organization name" value={orgName} handleSearch={handleGetRepos} />;
 });
 
 export default ReposSearch;

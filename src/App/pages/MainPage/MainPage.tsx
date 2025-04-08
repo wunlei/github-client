@@ -19,38 +19,30 @@ const MainPage: React.FC = observer(() => {
   const [searchParams, setSearchParams] = useSearchParams();
   const store = useMainPageStore();
 
-  const { isLoading, isError, reposOnCurrPage, setTypeFilter, setOrgName, fetchRepos, setCurrPage } = store;
+  const { isLoading, isError, reposOnCurrPage } = store;
 
   const handleTypeChange = useCallback(
-    (e: Option) => {
-      setTypeFilter(e.key);
-      searchParams.set('type', e.key);
+    (option: Option) => {
+      searchParams.set('type', option.key);
       setSearchParams(searchParams);
     },
-    [searchParams, setSearchParams, setTypeFilter],
+    [searchParams, setSearchParams],
   );
 
   const handlePageChange = useCallback(
     (n: number) => {
-      setCurrPage(n);
       searchParams.set('page', `${n}`);
       setSearchParams(searchParams);
     },
-    [searchParams, setCurrPage, setSearchParams],
+    [searchParams, setSearchParams],
   );
 
   const handleGetRepos = useCallback(
     (org: string) => {
-      if (!org) {
-        return;
-      }
-      setOrgName(org);
       searchParams.set('org', org.trim());
       setSearchParams(searchParams);
-
-      fetchRepos();
     },
-    [fetchRepos, searchParams, setOrgName, setSearchParams],
+    [searchParams, setSearchParams],
   );
 
   useInitMainPage();
