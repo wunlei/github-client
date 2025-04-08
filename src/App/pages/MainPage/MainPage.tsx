@@ -1,38 +1,25 @@
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useSearchParams } from 'react-router';
-import Dropdown from 'components/Dropdown';
+import { useInitMainPage } from 'App/pages/MainPage/hooks';
 import { Option } from 'components/Dropdown/Dropdown.types';
 import ErrorMsg from 'components/ErrorMsg';
 import Loader from 'components/Loader';
 import PageLayout from 'components/PageLayout';
-import Pagination from 'components/Pagination';
-import Search from 'components/Search';
 import Typography from 'components/Typography';
-import List from 'pages/MainPage/components/List';
-import MainPageStore from 'store/MainPageStore';
-import { useLocalStore } from 'store/hooks/useLocalStore';
+import { useMainPageStore } from 'store/MainPageStore/';
+import List from './components/List';
+import ReposPagination from './components/ReposPagination';
+import ReposSearch from './components/ReposSearch';
+import TypeDropdown from './components/TypesDropdown';
 import s from './MainPage.module.scss';
 
 const MainPage: React.FC = observer(() => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const store = useLocalStore(() => new MainPageStore());
+  const store = useMainPageStore();
 
-  const {
-    isLoading,
-    isError,
-    orgName,
-    totalPages,
-    currPageNum,
-    reposOnCurrPage,
-    filterOptions,
-    filterSelectedOption,
-    setTypeFilter,
-    setOrgName,
-    fetchRepos,
-    setCurrPage,
-  } = store;
+  const { isLoading, isError, reposOnCurrPage, setTypeFilter, setOrgName, fetchRepos, setCurrPage } = store;
 
   const handleTypeChange = useCallback(
     (e: Option) => {
@@ -58,7 +45,6 @@ const MainPage: React.FC = observer(() => {
         return;
       }
       setOrgName(org);
-
       searchParams.set('org', org.trim());
       setSearchParams(searchParams);
 
@@ -67,25 +53,7 @@ const MainPage: React.FC = observer(() => {
     [fetchRepos, searchParams, setOrgName, setSearchParams],
   );
 
-  useEffect(() => {
-    const type = searchParams.get('type');
-    if (type) {
-      setTypeFilter(type);
-    }
-
-    const page = searchParams.get('page');
-
-    if (page && parseInt(page)) {
-      setCurrPage(parseInt(page));
-    }
-
-    const org = searchParams.get('org');
-
-    if (org) {
-      setOrgName(org);
-      fetchRepos();
-    }
-  }, [fetchRepos, searchParams, setCurrPage, setOrgName, setTypeFilter]);
+  useInitMainPage();
 
   return (
     <PageLayout className={s.page}>
@@ -94,20 +62,15 @@ const MainPage: React.FC = observer(() => {
           List of organization repositories
         </Typography>
         <div className={s.filters}>
-          <Dropdown
-            className={s.dropdown}
-            options={filterOptions}
-            value={filterSelectedOption}
-            onChange={handleTypeChange}
-          />
-          <Search placeholder="Enter organization name" value={orgName} handleSearch={handleGetRepos} />
+          <TypeDropdown className={s.dropdown} onChange={handleTypeChange} />
+          <ReposSearch onChange={handleGetRepos} />
         </div>
         {isLoading && <Loader />}
         {isError && <ErrorMsg />}
         {!isLoading && !isError && (
           <>
             <List repos={reposOnCurrPage} />
-            <Pagination count={totalPages} current={currPageNum} onChange={handlePageChange} />
+            <ReposPagination onChange={handlePageChange} className={s.pagination} />
           </>
         )}
       </div>
