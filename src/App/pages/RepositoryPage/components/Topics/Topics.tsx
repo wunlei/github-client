@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 import { memo } from 'react';
 import Badge from 'components/Badge';
@@ -5,7 +6,7 @@ import { topicUrl } from 'config/api';
 import { useRepositoryPageStore } from 'store/RepositoryPageStore';
 import s from './Topics.module.scss';
 
-const Topics: React.FC = () => {
+const Topics: React.FC = observer(() => {
   const store = useRepositoryPageStore();
   const { repoData } = store;
 
@@ -30,6 +31,6 @@ const Topics: React.FC = () => {
       ))}
     </div>
   );
-};
+});
 
 export default memo(Topics);

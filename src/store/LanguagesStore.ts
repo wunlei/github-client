@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { getRepoLanguages } from 'api/api';
 import { GetRepoLanguagesParams, RepoLanguagesApi } from 'api/types';
 import { META, MetaValue } from 'config/meta';
@@ -42,9 +42,11 @@ class LanguagesStore implements ILocalStore {
   fetchData = async ({ owner, repo }: GetRepoLanguagesParams) => {
     try {
       this._meta = META.loading;
-      this._data = {};
-      this._data = await getRepoLanguages({ owner, repo });
-      this._meta = META.success;
+      const data = await getRepoLanguages({ owner, repo });
+      runInAction(() => {
+        this._data = data;
+        this._meta = META.success;
+      });
     } catch {
       this._meta = META.error;
     }

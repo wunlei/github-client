@@ -1,10 +1,11 @@
+import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 import { memo } from 'react';
 import StatsItem from 'pages/RepositoryPage/components/StatsItem';
 import { useRepositoryPageStore } from 'store/RepositoryPageStore';
 import s from './Stats.module.scss';
 
-const Stats: React.FC = () => {
+const Stats: React.FC = observer(() => {
   const store = useRepositoryPageStore();
   const { repoData } = store;
 
@@ -20,6 +21,6 @@ const Stats: React.FC = () => {
       <StatsItem type={'forks'} number={forksCount} />
     </div>
   );
-};
+});
 
 export default memo(Stats);

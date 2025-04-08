@@ -1,10 +1,11 @@
+import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 import { memo } from 'react';
 import Typography from 'components/Typography';
 import { useRepositoryPageStore } from 'store/RepositoryPageStore';
 import s from './Readme.module.scss';
 
-const Readme: React.FC = () => {
+const Readme: React.FC = observer(() => {
   const store = useRepositoryPageStore();
   const { readme } = store;
   if (!readme) {
@@ -19,6 +20,6 @@ const Readme: React.FC = () => {
       <div dangerouslySetInnerHTML={{ __html: readme }}></div>
     </div>
   );
-};
+});
 
 export default memo(Readme);

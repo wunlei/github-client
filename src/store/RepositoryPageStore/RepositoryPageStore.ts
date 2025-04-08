@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { getReadme, getSingleRepo } from 'api/api';
 import { MetaValue, META } from 'config/meta';
 import { ILocalStore } from 'store/hooks/useLocalStore';
@@ -38,8 +38,10 @@ class RepositoryPageStore implements ILocalStore {
       this._meta = META.loading;
       this._repoData = null;
       const result = await getSingleRepo({ owner: this._orgName, repo: this._repoName });
-      this._repoData = normalizeRepo(result);
-      this._meta = META.success;
+      runInAction(() => {
+        this._repoData = normalizeRepo(result);
+        this._meta = META.success;
+      });
     } catch {
       this._meta = META.error;
     }
@@ -50,8 +52,10 @@ class RepositoryPageStore implements ILocalStore {
       this._meta = META.loading;
       this._readme = null;
       const result = await getReadme({ owner: this._orgName, repo: this._repoName });
-      this._readme = result;
-      this._meta = META.success;
+      runInAction(() => {
+        this._readme = result;
+        this._meta = META.success;
+      });
     } catch {
       this._meta = META.error;
     }

@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { getRepoContributors } from 'api/api';
 import { GetRepoContributorsParams } from 'api/types';
 import { META, MetaValue } from 'config/meta';
@@ -66,8 +66,10 @@ class ContributorsStore implements ILocalStore {
       this._meta = META.loading;
       this._data = [];
       const result = await getRepoContributors({ owner, repo });
-      this._data = result.map(normalizeUser);
-      this._meta = META.success;
+      runInAction(() => {
+        this._data = result.map(normalizeUser);
+        this._meta = META.success;
+      });
     } catch {
       this._meta = META.error;
     }
