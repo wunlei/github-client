@@ -7,12 +7,12 @@ import { getLangPercents } from 'utils/utils';
 
 type PrivateFields = '_data' | '_meta';
 
-class LanguagesStore<T extends string> implements ILocalStore {
+class LanguagesStore implements ILocalStore {
   private _meta: MetaValue = META.initial;
   private _data: RepoLanguagesApi = {};
 
   constructor() {
-    makeObservable<LanguagesStore<T>, PrivateFields>(this, {
+    makeObservable<LanguagesStore, PrivateFields>(this, {
       _data: observable.ref,
       _meta: observable,
       data: computed,

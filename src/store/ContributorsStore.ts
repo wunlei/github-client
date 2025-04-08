@@ -7,14 +7,14 @@ import { UserModel, normalizeUser } from 'store/models/api/user';
 
 type PrivateFields = '_data' | '_meta' | '_isAllVisible' | '_maxShownCount';
 
-class ContributorsStore<T extends string> implements ILocalStore {
+class ContributorsStore implements ILocalStore {
   private _meta: MetaValue = META.initial;
   private _data: UserModel[] = [];
   private _isAllVisible: boolean = false;
   private _maxShownCount: number = 3;
 
   constructor() {
-    makeObservable<ContributorsStore<T>, PrivateFields>(this, {
+    makeObservable<ContributorsStore, PrivateFields>(this, {
       _data: observable.ref,
       _meta: observable,
       _isAllVisible: observable,
