@@ -50,7 +50,10 @@ class LanguagesStore implements ILocalStore {
     }
   };
 
-  destroy(): void {}
+  destroy(): void {
+    this._meta = META.initial;
+    this._data = {};
+  }
 }
 
 export default LanguagesStore;

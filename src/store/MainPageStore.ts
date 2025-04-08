@@ -120,7 +120,11 @@ class MainPageStore implements ILocalStore {
     this._paginationStore.setPerPage(n);
   };
 
-  destroy(): void {}
+  destroy(): void {
+    this._meta = META.initial;
+    this._orgName = '';
+    this._repos = [];
+  }
 }
 
 export default MainPageStore;

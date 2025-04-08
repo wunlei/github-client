@@ -63,7 +63,11 @@ class PaginationStore<T> implements ILocalStore {
     this._currPageNum = 1;
   };
 
-  destroy(): void {}
+  destroy(): void {
+    this._items = [];
+    this._currPageNum = 1;
+    this._perPage = 9;
+  }
 }
 
 export default PaginationStore;

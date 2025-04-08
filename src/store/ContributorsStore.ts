@@ -73,7 +73,12 @@ class ContributorsStore implements ILocalStore {
     }
   };
 
-  destroy(): void {}
+  destroy(): void {
+    this._meta = META.initial;
+    this._data = [];
+    this._isAllVisible = false;
+    this._maxShownCount = 3;
+  }
 }
 
 export default ContributorsStore;

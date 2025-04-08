@@ -89,5 +89,11 @@ export class RepositoryPageStore implements ILocalStore {
     this._repoName = e;
   };
 
-  destroy(): void {}
+  destroy(): void {
+    this._meta = META.initial;
+    this._orgName = '';
+    this._repoName = '';
+    this._repoData = null;
+    this._readme = null;
+  }
 }
