@@ -96,7 +96,7 @@ const RepositoryPage: React.FC = observer(() => {
               {repo}
             </Typography>
           </a>
-          {!!topics.length && (
+          {topics.length > 0 && (
             <div className={s.tags}>
               {topics.map((topic) => (
                 <Badge key={topic}>
