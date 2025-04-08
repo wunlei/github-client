@@ -12,13 +12,13 @@ import {
   UserApi,
 } from './types';
 
-const AUTH_TOKEN: string | undefined = import.meta.env.AUTH_TOKEN;
+const AUTH_TOKEN: string | undefined = import.meta.env.VITE_AUTH_TOKEN;
 
 const axiosInstance = axios.create({
   baseURL: 'https://api.github.com/',
   headers: {
     'X-GitHub-Api-Version': '2022-11-28',
-    Authorization: `Bearer ${AUTH_TOKEN}`,
+    Authorization: AUTH_TOKEN && `Bearer ${AUTH_TOKEN}`,
     Accept: 'application/vnd.github+json',
   },
 });
