@@ -1,6 +1,6 @@
 import c from 'classnames';
 import { forwardRef, memo } from 'react';
-import { InputProps } from 'components/Input/Input.types';
+import { InputProps } from './Input.types';
 import s from './Input.module.scss';
 
 const Input = forwardRef<HTMLInputElement, InputProps>(

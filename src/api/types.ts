@@ -1,10 +1,10 @@
-export type Repos = Array<Repo>;
+export type ReposApi = Array<RepoApi>;
 
-export type Repo = {
+export type RepoApi = {
   id: number;
   name: string;
   private: boolean;
-  owner: Owner;
+  owner: OwnerApi;
   html_url: string;
   description?: string;
   updated_at: string;
@@ -14,7 +14,7 @@ export type Repo = {
   topics: string[];
 };
 
-export type Owner = {
+export type OwnerApi = {
   login: string;
   id: number;
   avatar_url: string;
@@ -33,13 +33,13 @@ export type GetRepoContributorsParams = GetSingleRepoParams;
 
 export type GetRepoReadmeParams = GetSingleRepoParams;
 
-export type RepoLanguages = {
+export type RepoLanguagesApi = {
   [key: string]: number;
 };
 
-export type RepoContributor = Omit<User, 'name'>;
+export type RepoContributorApi = Omit<UserApi, 'name'>;
 
-export type User = {
+export type UserApi = {
   login: string;
   avatar_url: string;
   html_url: string;
@@ -48,6 +48,7 @@ export type User = {
 
 export type GetReposByOrgParams = {
   org: string;
+  type?: string;
   page?: number;
   per_page?: number;
 };

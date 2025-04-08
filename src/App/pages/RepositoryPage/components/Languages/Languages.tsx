@@ -1,26 +1,25 @@
 import c from 'classnames';
+import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useEffect, useState , memo } from 'react';
-import { getRepoLanguages } from 'api/api';
-import { RepoLanguages } from 'api/types';
+import { memo, useEffect } from 'react';
 import Typography from 'components/Typography';
-import { getLangPercents } from 'utils/utils';
+import LanguagesStore from 'store/LanguagesStore';
+import { useLocalStore } from 'store/hooks/useLocalStore';
 import { LanguagesProps } from './Languages.types';
 import s from './Languages.module.scss';
 
-const Languages: React.FC<LanguagesProps> = ({ repo, owner }) => {
-  const [data, setData] = useState<RepoLanguages>();
+const Languages: React.FC<LanguagesProps> = observer(({ owner, repo }) => {
+  const store = useLocalStore(() => new LanguagesStore());
+
+  const { dataFormatted, fetchData } = store;
 
   useEffect(() => {
-    const result = getRepoLanguages({ repo, owner });
-    result.then((data) => setData(data));
-  }, [owner, repo]);
+    fetchData({ owner, repo });
+  }, [fetchData, owner, repo]);
 
-  if (!data) {
+  if (!dataFormatted.length) {
     return null;
   }
-
-  const langArray = getLangPercents(data);
 
   return (
     <div className={s.languages}>
@@ -28,12 +27,12 @@ const Languages: React.FC<LanguagesProps> = ({ repo, owner }) => {
         Languages
       </Typography>
       <div className={s.percentageBar}>
-        {langArray.map(([lang, percent]) => (
+        {dataFormatted.map(([lang, percent]) => (
           <div key={lang} style={{ width: `${percent}%` }} className={c(s.percentageBarItem, lang)}></div>
         ))}
       </div>
       <ul className={s.langList}>
-        {langArray.map(([lang, percent]) => (
+        {dataFormatted.map(([lang, percent]) => (
           <li key={lang} className={c(s.langItem, lang)}>
             <span className={s.indicator}></span>
             <span>
@@ -49,6 +48,6 @@ const Languages: React.FC<LanguagesProps> = ({ repo, owner }) => {
       </ul>
     </div>
   );
-};
+});
 
 export default memo(Languages);
