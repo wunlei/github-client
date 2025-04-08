@@ -1,9 +1,12 @@
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
+import Readme from 'App/pages/RepositoryPage/components/Readme/Readme';
+import Stats from 'App/pages/RepositoryPage/components/Stats/Stats';
+import Topics from 'App/pages/RepositoryPage/components/Topics/Topics';
+import { useInitRepositoryPage } from 'App/pages/RepositoryPage/hooks';
 import Avatar from 'components/Avatar';
-import Badge from 'components/Badge';
 import Button from 'components/Button';
 import ErrorMsg from 'components/ErrorMsg';
 import Loader from 'components/Loader';
@@ -11,12 +14,9 @@ import PageLayout from 'components/PageLayout';
 import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import ChainIcon from 'components/icons/ChainIcon';
-import { topicUrl } from 'config/api';
 import { routes } from 'config/router';
 import Contributors from 'pages/RepositoryPage/components/Contributors';
-import StatsItem from 'pages/RepositoryPage/components/StatsItem';
-import { RepositoryPageStore } from 'store/RepositoryPageStore';
-import { useLocalStore } from 'store/hooks/useLocalStore';
+import { useRepositoryPageStore } from 'store/RepositoryPageStore';
 import Languages from './components/Languages/Languages';
 import s from './RepositoryPage.module.scss';
 
@@ -25,9 +25,9 @@ const RepositoryPage: React.FC = observer(() => {
   const location = useLocation();
   const { owner, repo } = useParams();
 
-  const store = useLocalStore(() => new RepositoryPageStore());
+  const store = useRepositoryPageStore();
 
-  const { isLoading, isError, readme, repoData, fetchReadme, fetchRepo, setOrgName, setRepoName } = store;
+  const { isLoading, isError, repoData } = store;
 
   const handleNavigateBack = useCallback(() => {
     if (location.key !== 'default') {
@@ -37,18 +37,7 @@ const RepositoryPage: React.FC = observer(() => {
     }
   }, [location.key, navigate]);
 
-  useEffect(() => {
-    if (!owner || !repo) {
-      navigate(routes.notFound);
-      return;
-    }
-
-    setOrgName(owner);
-    setRepoName(repo);
-
-    fetchRepo();
-    fetchReadme();
-  }, [fetchReadme, fetchRepo, navigate, owner, repo, setOrgName, setRepoName]);
+  useInitRepositoryPage();
 
   if (!owner || !repo) {
     return null;
@@ -76,7 +65,7 @@ const RepositoryPage: React.FC = observer(() => {
     return null;
   }
 
-  const { forksCount, stargazersCount, watchersCount, htmlUrl, topics } = repoData;
+  const { htmlUrl } = repoData;
   const { avatarUrl } = repoData.owner;
 
   return (
@@ -96,35 +85,14 @@ const RepositoryPage: React.FC = observer(() => {
               {repo}
             </Typography>
           </a>
-          {topics.length > 0 && (
-            <div className={s.tags}>
-              {topics.map((topic) => (
-                <Badge key={topic}>
-                  <a href={`${topicUrl}${topic}`} target="_blank" rel="noreferrer">
-                    {topic}
-                  </a>
-                </Badge>
-              ))}
-            </div>
-          )}
-          <div className={s.statsContainer}>
-            <StatsItem type={'stars'} number={stargazersCount} />
-            <StatsItem type={'watchers'} number={watchersCount} />
-            <StatsItem type={'forks'} number={forksCount} />
-          </div>
+          <Topics />
+          <Stats />
           <div className={s.contentFooter}>
             <Languages owner={owner} repo={repo} />
             <Contributors owner={owner} repo={repo} />
           </div>
         </div>
-        {readme && (
-          <div className={s.readmeContainer}>
-            <Typography weight="bold" view="p-14">
-              README.md
-            </Typography>
-            <div dangerouslySetInnerHTML={{ __html: readme }}></div>
-          </div>
-        )}
+        <Readme />
       </article>
     </PageLayout>
   );
