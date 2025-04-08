@@ -37,24 +37,19 @@ const MainPage: React.FC = observer(() => {
   const handleTypeChange = useCallback(
     (e: Option) => {
       setTypeFilter(e.key);
-      setSearchParams((prev) => {
-        prev.set('type', e.key);
-        return prev;
-      });
+      searchParams.set('type', e.key);
+      setSearchParams(searchParams);
     },
-    [setSearchParams, setTypeFilter],
+    [searchParams, setSearchParams, setTypeFilter],
   );
 
   const handlePageChange = useCallback(
     (n: number) => {
       setCurrPage(n);
-
-      setSearchParams((prev) => {
-        prev.set('page', `${n}`);
-        return prev;
-      });
+      searchParams.set('page', `${n}`);
+      setSearchParams(searchParams);
     },
-    [setCurrPage, setSearchParams],
+    [searchParams, setCurrPage, setSearchParams],
   );
 
   const handleGetRepos = useCallback(
@@ -64,14 +59,12 @@ const MainPage: React.FC = observer(() => {
       }
       setOrgName(org);
 
-      setSearchParams((prev) => {
-        prev.set('org', org.trim());
-        return prev;
-      });
+      searchParams.set('org', org.trim());
+      setSearchParams(searchParams);
 
       fetchRepos();
     },
-    [fetchRepos, setOrgName, setSearchParams],
+    [fetchRepos, searchParams, setOrgName, setSearchParams],
   );
 
   useEffect(() => {
