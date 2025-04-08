@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import Avatar from 'components/Avatar';
 import Badge from 'components/Badge';
@@ -28,6 +28,14 @@ const RepositoryPage: React.FC = observer(() => {
   const store = useLocalStore(() => new RepositoryPageStore());
 
   const { isLoading, isError, readme, repoData, fetchReadme, fetchRepo, setOrgName, setRepoName } = store;
+
+  const handleNavigateBack = useCallback(() => {
+    if (location.key !== 'default') {
+      navigate(-1);
+    } else {
+      navigate(routes.home);
+    }
+  }, [location.key, navigate]);
 
   useEffect(() => {
     if (!owner || !repo) {
@@ -75,17 +83,7 @@ const RepositoryPage: React.FC = observer(() => {
     <PageLayout>
       <article className={s.content}>
         <div className={s.header}>
-          <Button
-            size="small"
-            variant="ghost"
-            onClick={() => {
-              if (location.key !== 'default') {
-                navigate(-1);
-              } else {
-                navigate(routes.home);
-              }
-            }}
-          >
+          <Button size="small" variant="ghost" onClick={handleNavigateBack}>
             <ArrowDownIcon width={32} height={32} color="accent" className={s.arrowBack} />
           </Button>
           <Avatar src={avatarUrl} alt={owner} />
