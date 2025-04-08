@@ -1,0 +1,14 @@
+import { observer } from 'mobx-react-lite';
+import * as React from 'react';
+import Search from 'components/Search';
+import { useMainPageStore } from 'store/MainPageStore/';
+import { ReposSearchProps } from './ReposSearch.types';
+
+const ReposSearch: React.FC<ReposSearchProps> = observer(({ onChange }) => {
+  const store = useMainPageStore();
+  const { orgName } = store;
+
+  return <Search placeholder="Enter organization name" value={orgName} handleSearch={onChange} />;
+});
+
+export default ReposSearch;
