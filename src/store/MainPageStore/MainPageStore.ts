@@ -124,6 +124,8 @@ class MainPageStore implements ILocalStore {
     this._meta = META.initial;
     this._orgName = '';
     this._repos = [];
+    this._filterStore.destroy();
+    this._filterStore.destroy();
   }
 }
 
