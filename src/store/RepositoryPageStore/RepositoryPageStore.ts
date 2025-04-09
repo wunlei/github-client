@@ -1,13 +1,13 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { getReadme, getSingleRepo } from 'api/api';
-import { MetaValue, META } from 'config/meta';
+import MetaStore from 'store/MetaStore';
 import { ILocalStore } from 'store/hooks/useLocalStore';
 import { normalizeRepo, RepoModel } from 'store/models/api/repo';
 
-type PrivateFields = '_meta' | '_orgName' | '_repoName' | '_repoData' | '_readme';
+type PrivateFields = '_orgName' | '_repoName' | '_repoData' | '_readme';
 
 class RepositoryPageStore implements ILocalStore {
-  private _meta: MetaValue = META.initial;
+  readonly metaStore = new MetaStore();
   private _orgName = '';
   private _repoName = '';
   private _repoData: RepoModel | null = null;
@@ -15,15 +15,12 @@ class RepositoryPageStore implements ILocalStore {
 
   constructor() {
     makeObservable<RepositoryPageStore, PrivateFields>(this, {
-      _meta: observable,
       _orgName: observable,
       _repoName: observable,
       _repoData: observable.ref,
       _readme: observable,
       orgName: computed,
       repoName: computed,
-      isError: computed,
-      isLoading: computed,
       repoData: computed,
       readme: computed,
       setOrgName: action,
@@ -35,29 +32,29 @@ class RepositoryPageStore implements ILocalStore {
 
   fetchRepo = async () => {
     try {
-      this._meta = META.loading;
+      this.metaStore.updateMeta('loading');
       this._repoData = null;
       const result = await getSingleRepo({ owner: this._orgName, repo: this._repoName });
       runInAction(() => {
         this._repoData = normalizeRepo(result);
-        this._meta = META.success;
+        this.metaStore.updateMeta('success');
       });
     } catch {
-      this._meta = META.error;
+      this.metaStore.updateMeta('error');
     }
   };
 
   fetchReadme = async () => {
     try {
-      this._meta = META.loading;
+      this.metaStore.updateMeta('loading');
       this._readme = null;
       const result = await getReadme({ owner: this._orgName, repo: this._repoName });
       runInAction(() => {
         this._readme = result;
-        this._meta = META.success;
+        this.metaStore.updateMeta('success');
       });
     } catch {
-      this._meta = META.error;
+      this.metaStore.updateMeta('error');
     }
   };
 
@@ -67,14 +64,6 @@ class RepositoryPageStore implements ILocalStore {
 
   get repoName() {
     return this._repoName;
-  }
-
-  get isError() {
-    return this._meta === 'error';
-  }
-
-  get isLoading() {
-    return this._meta === 'loading';
   }
 
   get repoData() {
@@ -94,7 +83,7 @@ class RepositoryPageStore implements ILocalStore {
   };
 
   destroy(): void {
-    this._meta = META.initial;
+    this.metaStore.destroy();
     this._orgName = '';
     this._repoName = '';
     this._repoData = null;

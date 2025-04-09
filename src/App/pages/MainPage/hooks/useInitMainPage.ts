@@ -4,13 +4,16 @@ import { useMainPageStore } from 'store/MainPageStore';
 
 export const useInitMainPage = () => {
   const store = useMainPageStore();
-  const { setTypeFilter, setCurrPage, setOrgName, fetchRepos } = store;
   const [searchParams] = useSearchParams();
+
+  const { setOrgName, fetchRepos } = store;
+  const { setValue } = store.filterStore;
+  const { setCurrPage } = store.paginationStore;
 
   useEffect(() => {
     const type = searchParams.get('type');
     if (type) {
-      setTypeFilter(type);
+      setValue(type);
     }
 
     const page = searchParams.get('page');

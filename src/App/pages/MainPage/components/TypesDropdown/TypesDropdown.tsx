@@ -7,16 +7,14 @@ import { TypesDropdownProps } from './TypesDropdown.types';
 
 const TypeDropdown: React.FC<TypesDropdownProps> = observer(({ className, onChange }) => {
   const store = useMainPageStore();
-  const { filterOptions, filterSelectedOption, setTypeFilter } = store;
+  const { options, selectedOption, setValue } = store.filterStore;
 
   const handleTypeChange = (option: Option) => {
-    setTypeFilter(option.key);
+    setValue(option.key);
     onChange(option);
   };
 
-  return (
-    <Dropdown className={className} options={filterOptions} value={filterSelectedOption} onChange={handleTypeChange} />
-  );
+  return <Dropdown className={className} options={options} value={selectedOption} onChange={handleTypeChange} />;
 });
 
 export default TypeDropdown;

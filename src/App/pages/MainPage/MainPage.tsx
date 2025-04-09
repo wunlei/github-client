@@ -19,7 +19,8 @@ const MainPage: React.FC = observer(() => {
   const [searchParams, setSearchParams] = useSearchParams();
   const store = useMainPageStore();
 
-  const { isLoading, isError, reposOnCurrPage } = store;
+  const { currPageItems } = store.paginationStore;
+  const { isLoading, isError } = store.metaStore;
 
   const handleTypeChange = useCallback(
     (option: Option) => {
@@ -61,7 +62,7 @@ const MainPage: React.FC = observer(() => {
         {isError && <ErrorMsg />}
         {!isLoading && !isError && (
           <>
-            <List repos={reposOnCurrPage} />
+            <List repos={currPageItems} />
             <ReposPagination onChange={handlePageChange} className={s.pagination} />
           </>
         )}

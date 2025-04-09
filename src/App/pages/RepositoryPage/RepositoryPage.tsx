@@ -26,8 +26,8 @@ const RepositoryPage: React.FC = observer(() => {
   const { owner, repo } = useParams();
 
   const store = useRepositoryPageStore();
-
-  const { isLoading, isError, repoData } = store;
+  const { repoData } = store;
+  const { isLoading, isError } = store.metaStore;
 
   const handleNavigateBack = useCallback(() => {
     if (location.key !== 'default') {

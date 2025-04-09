@@ -6,7 +6,7 @@ import { ReposPaginationProps } from './ReposPagination.types';
 
 const ReposPagination: React.FC<ReposPaginationProps> = observer(({ className, onChange }) => {
   const store = useMainPageStore();
-  const { totalPages, currPageNum, setCurrPage } = store;
+  const { totalPages, currPageNum, setCurrPage } = store.paginationStore;
 
   const handlePageChange = (n: number) => {
     setCurrPage(n);
