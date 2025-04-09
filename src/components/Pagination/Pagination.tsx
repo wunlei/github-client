@@ -63,7 +63,7 @@ const Pagination: React.FC<PaginationProps> = ({ count, offset = 3, current, cla
         }
         return (
           <button className={c(s.btn, e === currPage && s.btnActive)} key={e} onClick={() => handleChangeCurrPage(e)}>
-            <Typography view="p-18" className={s.item}>
+            <Typography view="p-18" className={s.item} tag="span">
               {e}
             </Typography>
           </button>
