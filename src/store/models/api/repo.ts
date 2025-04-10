@@ -4,7 +4,6 @@ import { normalizeOwner, OwnerModel } from 'store/models/api/owner';
 export type RepoModel = {
   id: number;
   name: string;
-  private: boolean;
   owner: OwnerModel;
   htmlUrl: string;
   description?: string;
@@ -15,16 +14,16 @@ export type RepoModel = {
   topics: string[];
 };
 
-export const normalizeRepo = (from: RepoApi): RepoModel => ({
-  id: from.id,
-  name: from.name,
-  private: from.private,
-  owner: normalizeOwner(from.owner),
-  htmlUrl: from.html_url,
-  description: from.description,
-  updatedAt: new Date(from.updated_at),
-  stargazersCount: from.stargazers_count,
-  watchersCount: from.watchers_count,
-  forksCount: from.forks_count,
-  topics: from.topics,
-});
+export const normalizeRepo = (from: RepoApi): RepoModel => {
+  const { owner, updated_at, stargazers_count, watchers_count, forks_count, html_url } = from;
+
+  return {
+    ...from,
+    owner: normalizeOwner(owner),
+    updatedAt: new Date(updated_at),
+    htmlUrl: html_url,
+    stargazersCount: stargazers_count,
+    watchersCount: watchers_count,
+    forksCount: forks_count,
+  };
+};

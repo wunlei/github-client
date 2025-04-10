@@ -8,10 +8,8 @@ export type OwnerModel = {
   htmlUrl: string;
 };
 
-export const normalizeOwner = ({ avatar_url, html_url, id, login, url }: OwnerApi): OwnerModel => ({
-  login: login,
-  id: id,
-  url: url,
+export const normalizeOwner = ({ avatar_url, html_url, ...rest }: OwnerApi): OwnerModel => ({
+  ...rest,
   avatarUrl: avatar_url,
   htmlUrl: html_url,
 });

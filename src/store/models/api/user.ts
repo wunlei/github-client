@@ -7,9 +7,8 @@ export type UserModel = {
   name: string;
 };
 
-export const normalizeUser = ({ avatar_url, html_url, login, name }: UserApi): UserModel => ({
-  login: login,
+export const normalizeUser = ({ avatar_url, html_url, ...rest }: UserApi): UserModel => ({
+  ...rest,
   avatarUrl: avatar_url,
   htmlUrl: html_url,
-  name: name,
 });
