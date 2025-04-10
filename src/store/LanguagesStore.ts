@@ -5,7 +5,7 @@ import MetaStore from 'store/MetaStore';
 import { ILocalStore } from 'store/hooks/useLocalStore';
 import { getLangPercents } from 'utils/utils';
 
-type PrivateFields = '_data' | '_meta';
+type PrivateFields = '_data';
 
 class LanguagesStore implements ILocalStore {
   readonly metaStore = new MetaStore();
@@ -14,10 +14,10 @@ class LanguagesStore implements ILocalStore {
   constructor() {
     makeObservable<LanguagesStore, PrivateFields>(this, {
       _data: observable.ref,
-      _meta: observable,
       data: computed,
       dataFormatted: computed,
       fetchData: action,
+      destroy: action,
     });
   }
 

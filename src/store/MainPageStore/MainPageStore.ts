@@ -7,18 +7,17 @@ import PaginationStore from 'store/PaginationStore';
 import { ILocalStore } from 'store/hooks/useLocalStore';
 import { normalizeRepo, RepoModel } from 'store/models/api/repo';
 
-type PrivateFields = '_meta' | '_repos' | '_orgName';
+type PrivateFields = '_repos' | '_orgName';
 
 class MainPageStore implements ILocalStore {
-  readonly metaStore = new MetaStore();
   private _orgName = '';
   private _repos: RepoModel[] = [];
+  readonly metaStore = new MetaStore();
   readonly paginationStore = new PaginationStore<RepoModel>();
   readonly filterStore = new FilterStore<RepositoryTypes>(repositoryTypes[0], repositoryTypes);
 
   constructor() {
     makeObservable<MainPageStore, PrivateFields>(this, {
-      _meta: observable,
       _repos: observable.ref,
       _orgName: observable,
       orgName: computed,
@@ -26,6 +25,7 @@ class MainPageStore implements ILocalStore {
       totalPages: computed,
       fetchRepos: action,
       setOrgName: action,
+      destroy: action,
     });
   }
 

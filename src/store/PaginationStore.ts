@@ -23,6 +23,7 @@ class PaginationStore<T> implements ILocalStore {
       setCurrPage: action,
       setPerPage: action,
       setItems: action,
+      destroy: action,
     });
   }
 

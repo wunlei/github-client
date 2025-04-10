@@ -7,11 +7,11 @@ import { normalizeRepo, RepoModel } from 'store/models/api/repo';
 type PrivateFields = '_orgName' | '_repoName' | '_repoData' | '_readme';
 
 class RepositoryPageStore implements ILocalStore {
-  readonly metaStore = new MetaStore();
   private _orgName = '';
   private _repoName = '';
   private _repoData: RepoModel | null = null;
   private _readme: string | null = null;
+  readonly metaStore = new MetaStore();
 
   constructor() {
     makeObservable<RepositoryPageStore, PrivateFields>(this, {
@@ -27,6 +27,7 @@ class RepositoryPageStore implements ILocalStore {
       setRepoName: action,
       fetchReadme: action,
       fetchRepo: action,
+      destroy: action,
     });
   }
 

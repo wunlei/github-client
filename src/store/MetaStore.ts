@@ -15,6 +15,7 @@ class MetaStore implements ILocalStore {
       isSuccess: computed,
       isInitial: computed,
       updateMeta: action,
+      destroy: action,
     });
   }
 

@@ -19,6 +19,7 @@ class FilterStore<T extends string> implements ILocalStore {
       selectedOption: computed,
       setValue: action,
       reset: action,
+      destroy: action,
     });
   }
 

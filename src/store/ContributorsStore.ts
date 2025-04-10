@@ -24,6 +24,7 @@ class ContributorsStore implements ILocalStore {
       hasHiddenItems: computed,
       toggleVisible: action,
       fetchData: action,
+      destroy: action,
     });
   }
 
