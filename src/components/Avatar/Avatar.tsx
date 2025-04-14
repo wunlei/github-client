@@ -2,7 +2,7 @@ import c from 'classnames';
 import * as React from 'react';
 import { memo } from 'react';
 import { AvatarProps } from './Avatar.types';
-import s from './Avatar.module.scss';
+import * as s from './Avatar.module.scss';
 
 const Avatar: React.FC<AvatarProps> = ({ type = 'square', src, alt, ...props }) => {
   return (

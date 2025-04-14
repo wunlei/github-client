@@ -5,7 +5,7 @@ import ForkIcon from 'components/icons/ForkIcon';
 import StarIcon from 'components/icons/StarIcon';
 import WatchIcon from 'components/icons/WatchIcon';
 import { StatsItemProps } from './StatsItem.types';
-import s from './StatsItem.module.scss';
+import * as s from './StatsItem.module.scss';
 
 const Items = {
   stars: { icon: <StarIcon />, text: 'stars' },

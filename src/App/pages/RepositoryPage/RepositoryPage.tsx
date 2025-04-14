@@ -15,7 +15,7 @@ import { routes } from 'config/router';
 import Contributors from 'pages/RepositoryPage/components/Contributors';
 import StatsItem from 'pages/RepositoryPage/components/StatsItem';
 import Languages from './components/Languages/Languages';
-import s from './RepositoryPage.module.scss';
+import * as s from './RepositoryPage.module.scss';
 
 const RepositoryPage: React.FC = () => {
   const navigate = useNavigate();

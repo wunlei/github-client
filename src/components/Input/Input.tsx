@@ -1,7 +1,7 @@
 import c from 'classnames';
 import { forwardRef, memo } from 'react';
 import { InputProps } from 'components/Input/Input.types';
-import s from './Input.module.scss';
+import * as s from './Input.module.scss';
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ value, afterSlot, className, disabled, onChange, ...props }, ref) => (

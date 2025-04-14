@@ -2,7 +2,7 @@ import c from 'classnames';
 import * as React from 'react';
 import { memo } from 'react';
 import { IconProps } from './Icon.types';
-import s from './Icon.module.scss';
+import * as s from './Icon.module.scss';
 
 const Icon: React.FC<React.PropsWithChildren<IconProps>> = ({
   color,

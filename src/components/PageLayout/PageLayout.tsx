@@ -3,7 +3,7 @@ import * as React from 'react';
 import { memo } from 'react';
 import Header from 'components/Header';
 import { PageLayoutProps } from './PageLayout.types';
-import s from './PageLayout.module.scss';
+import * as s from './PageLayout.module.scss';
 
 const PageLayout: React.FC<PageLayoutProps> = ({ className, children, ...props }) => {
   return (

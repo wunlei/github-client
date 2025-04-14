@@ -12,7 +12,7 @@ import PageLayout from 'components/PageLayout';
 import Typography from 'components/Typography';
 import SearchIcon from 'components/icons/SearchIcon';
 import List from 'pages/MainPage/components/List';
-import s from './MainPage.module.scss';
+import * as s from './MainPage.module.scss';
 
 const org = 'ktsstudio';
 

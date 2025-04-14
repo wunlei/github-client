@@ -3,7 +3,7 @@ import { memo } from 'react';
 import Button from 'components/Button';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import { PaginationProps } from './Pagination.types';
-import s from './Pagination.module.scss';
+import * as s from './Pagination.module.scss';
 
 const Pagination: React.FC<PaginationProps> = ({ currPage, isLastPage, onChange }) => {
   const handlePageChange = (n: number) => {

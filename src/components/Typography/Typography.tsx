@@ -2,7 +2,7 @@ import c from 'classnames';
 import * as React from 'react';
 import { memo } from 'react';
 import { TypographyProps } from './Typography.types';
-import s from './Typography.module.scss';
+import * as s from './Typography.module.scss';
 
 const Typography: React.FC<TypographyProps> = ({
   className,

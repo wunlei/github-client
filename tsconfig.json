@@ -1,4 +1,32 @@
 {
-  "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "ES2020"],
+    "module": "esnext",
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "baseUrl": "./src",
+    "paths": {
+      "api/*": ["api/*"],
+      "App/*": ["App/*"],
+      "pages/*": ["App/pages/*"],
+      "assets/*": ["assets/*"],
+      "components/*": ["components/*"],
+      "config/*": ["config/*"],
+      "styles/*": ["styles/*"],
+      "store/*": ["store/*"],
+      "utils/*": ["utils/*"]
+    }
+  },
+  "include": ["src/**/*", "global.d.ts"],
+  "exclude": ["node_modules", "build", "dist"]
 }

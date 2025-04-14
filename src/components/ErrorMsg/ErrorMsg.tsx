@@ -2,7 +2,7 @@ import * as React from 'react';
 import { memo } from 'react';
 import Typography from 'components/Typography';
 import { ErrorMsgProps } from './ErrorMsg.types';
-import s from './ErrorMsg.module.scss';
+import * as s from './ErrorMsg.module.scss';
 
 const ErrorMsg: React.FC<ErrorMsgProps> = ({ message }) => {
   return (

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { memo } from 'react';
 import Typography from 'components/Typography';
 import { CardProps } from './Card.types';
-import s from './Card.module.scss';
+import * as s from './Card.module.scss';
 
 const Card: React.FC<CardProps> = ({
   className,

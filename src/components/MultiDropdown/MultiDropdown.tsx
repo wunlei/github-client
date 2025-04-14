@@ -5,7 +5,7 @@ import Input from 'components/Input';
 import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import { MultiDropdownProps, Option } from './MultiDropdown.types';
-import s from './MultiDropdown.module.scss';
+import * as s from './MultiDropdown.module.scss';
 
 const MultiDropdown: React.FC<MultiDropdownProps> = ({ options, value, disabled, onChange, getTitle, className }) => {
   const [filter, setFilter] = useState('');

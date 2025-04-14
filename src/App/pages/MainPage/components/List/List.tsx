@@ -7,7 +7,7 @@ import StarIcon from 'components/icons/StarIcon';
 import { routes } from 'config/router';
 import { formatDate } from 'utils/utils';
 import { ListProps } from './List.types';
-import s from './List.module.scss';
+import * as s from './List.module.scss';
 
 const List: React.FC<ListProps> = ({ repos }) => {
   return (

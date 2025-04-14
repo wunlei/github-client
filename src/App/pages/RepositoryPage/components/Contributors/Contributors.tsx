@@ -6,7 +6,7 @@ import Avatar from 'components/Avatar';
 import Counter from 'components/Counter';
 import Typography from 'components/Typography';
 import { ContributorsProps } from './Contributors.types';
-import s from './Contributors.module.scss';
+import * as s from './Contributors.module.scss';
 
 const Contributors: React.FC<ContributorsProps> = ({ repo, owner }) => {
   const [data, setData] = useState<User[]>();

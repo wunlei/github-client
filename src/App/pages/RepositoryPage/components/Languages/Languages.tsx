@@ -1,12 +1,12 @@
 import c from 'classnames';
 import * as React from 'react';
-import { useEffect, useState , memo } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { getRepoLanguages } from 'api/api';
 import { RepoLanguages } from 'api/types';
 import Typography from 'components/Typography';
 import { getLangPercents } from 'utils/utils';
 import { LanguagesProps } from './Languages.types';
-import s from './Languages.module.scss';
+import * as s from './Languages.module.scss';
 
 const Languages: React.FC<LanguagesProps> = ({ repo, owner }) => {
   const [data, setData] = useState<RepoLanguages>();

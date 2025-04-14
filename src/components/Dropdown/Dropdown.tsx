@@ -6,7 +6,7 @@ import Input from 'components/Input';
 import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import { DropdownProps, Option } from './Dropdown.types';
-import s from './Dropdown.module.scss';
+import * as s from './Dropdown.module.scss';
 
 const Dropdown: React.FC<DropdownProps> = ({ options, value, disabled, onChange, className, placeholder }) => {
   const [filter, setFilter] = useState('');

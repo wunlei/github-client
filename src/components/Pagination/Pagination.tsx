@@ -5,7 +5,7 @@ import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import { getRange } from 'utils/utils';
 import { PaginationProps } from './Pagination.types';
-import s from './Pagination.module.scss';
+import * as s from './Pagination.module.scss';
 
 const Pagination: React.FC<PaginationProps> = ({ count = 3, offset = 3, current, onChange }) => {
   const firstPage = 1;

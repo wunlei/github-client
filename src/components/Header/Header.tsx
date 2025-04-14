@@ -6,7 +6,7 @@ import Typography from 'components/Typography';
 import LogoIcon from 'components/icons/LogoIcon';
 import { routes } from 'config/router';
 import { HeaderProps } from './Header.types';
-import s from './Header.module.scss';
+import * as s from './Header.module.scss';
 
 const Header: React.FC<HeaderProps> = ({ className, ...props }) => {
   return (

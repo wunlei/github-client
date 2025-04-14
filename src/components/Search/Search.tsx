@@ -4,7 +4,7 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 import SearchIcon from 'components/icons/SearchIcon';
 import { SearchProps } from './Search.types';
-import s from './Search.module.scss';
+import * as s from './Search.module.scss';
 
 const Search: React.FC<SearchProps> = ({ value, placeholder, handleSearch }) => {
   const [inputValue, setInputValue] = useState(value);

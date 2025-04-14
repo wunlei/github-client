@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { memo } from 'react';
 import { CounterProps } from './Counter.types.ts';
-import s from './Counter.module.scss';
+import * as s from './Counter.module.scss';
 
 const Counter: React.FC<CounterProps> = ({ children, ...props }) => {
   return (

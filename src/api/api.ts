@@ -12,7 +12,7 @@ import {
   User,
 } from './types';
 
-const AUTH_TOKEN: string | undefined = import.meta.env.AUTH_TOKEN;
+const AUTH_TOKEN: string | undefined = process.env.AUTH_TOKEN;
 
 const axiosInstance = axios.create({
   baseURL: 'https://api.github.com/',
