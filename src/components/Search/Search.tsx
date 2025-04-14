@@ -1,7 +1,10 @@
+import c from 'classnames';
 import * as React from 'react';
 import { memo, useEffect, useState } from 'react';
 import Button from 'components/Button';
 import Input from 'components/Input';
+import InputButton from 'components/Input/InputButton/InputButton';
+import CrossIcon from 'components/icons/CrossIcon';
 import SearchIcon from 'components/icons/SearchIcon';
 import { SearchProps } from './Search.types';
 import s from './Search.module.scss';
@@ -29,6 +32,16 @@ const Search: React.FC<SearchProps> = ({ value, placeholder, handleSearch }) => 
         value={inputValue}
         onChange={setInputValue}
         onKeyDown={handleEnter}
+        afterSlot={
+          <InputButton
+            classname={c(s.btnClose, inputValue && s.btnCloseVisible)}
+            onClick={() => {
+              setInputValue('');
+            }}
+          >
+            <CrossIcon width={20} height={20} />
+          </InputButton>
+        }
       />
 
       <Button onClick={() => handleSearch(inputValue)}>

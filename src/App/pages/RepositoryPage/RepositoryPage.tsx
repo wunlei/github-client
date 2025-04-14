@@ -72,7 +72,7 @@ const RepositoryPage: React.FC = observer(() => {
     <PageLayout>
       <article className={s.content}>
         <div className={s.header}>
-          <Button size="small" variant="ghost" onClick={handleNavigateBack}>
+          <Button size="icon" variant="ghost" onClick={handleNavigateBack}>
             <ArrowDownIcon width={32} height={32} color="accent" className={s.arrowBack} />
           </Button>
           <Avatar src={avatarUrl} alt={owner} />

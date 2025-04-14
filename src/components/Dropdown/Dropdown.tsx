@@ -1,8 +1,8 @@
 import c from 'classnames';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, useState, memo } from 'react';
-import Button from 'components/Button';
 import Input from 'components/Input';
+import InputButton from 'components/Input/InputButton/InputButton';
 import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import { DropdownProps, Option } from './Dropdown.types';
@@ -21,6 +21,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, value, disabled, onChange,
 
   const handleClickOption = (option: Option) => {
     onChange(option);
+    setFilter('');
     setIsOpen(false);
   };
 
@@ -59,15 +60,14 @@ const Dropdown: React.FC<DropdownProps> = ({ options, value, disabled, onChange,
         disabled={disabled}
         placeholder={placeholder}
         afterSlot={
-          <Button
-            size="small"
-            variant="ghost"
+          <InputButton
+            classname={c(s.arrow, isOpen && s.arrowOpen)}
             onClick={() => {
               setIsOpen((v) => !v);
             }}
           >
             <ArrowDownIcon />
-          </Button>
+          </InputButton>
         }
         onChange={(v: string) => {
           setFilter(v.toLowerCase());

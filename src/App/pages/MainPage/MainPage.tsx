@@ -20,7 +20,7 @@ const MainPage: React.FC = observer(() => {
   const store = useMainPageStore();
 
   const { currPageItems } = store.paginationStore;
-  const { isLoading, isError } = store.metaStore;
+  const { isLoading, isError, isInitial } = store.metaStore;
 
   const handleTypeChange = useCallback(
     (option: Option) => {
@@ -58,9 +58,9 @@ const MainPage: React.FC = observer(() => {
           <TypeDropdown className={s.dropdown} onChange={handleTypeChange} />
           <ReposSearch onChange={handleGetRepos} />
         </div>
-        {isLoading && <Loader />}
+        {isLoading && <Loader className={s.loader} />}
         {isError && <ErrorMsg />}
-        {!isLoading && !isError && (
+        {!isLoading && !isError && !isInitial && (
           <>
             <List repos={currPageItems} />
             <ReposPagination onChange={handlePageChange} className={s.pagination} />

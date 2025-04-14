@@ -29,3 +29,11 @@
 .optionSelected {
   color: var(--text-accent);
 }
+
+.arrow {
+  transition: transform 0.1s;
+}
+
+.arrowOpen {
+  transform: rotate(-180deg);
+}

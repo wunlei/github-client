@@ -28,6 +28,7 @@ const Typography: React.FC<TypographyProps> = ({
         s[`weight-${weight}`],
         s[`color-${color}`],
         s[`align-${align}`],
+        s[`tag-${tag}`],
         maxLines && s.maxLines,
         inline && s.textInline,
         className,

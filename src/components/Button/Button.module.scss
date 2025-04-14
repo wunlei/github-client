@@ -52,6 +52,10 @@
 }
 
 .size-small {
+  padding: var(--space-xxs) var(--space-xs);
+}
+
+.size-icon {
   min-height: initial;
   padding: 0;
 }

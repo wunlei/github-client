@@ -23,9 +23,22 @@
 
 .dropdown {
   max-width: 300px;
+
+  @include mixins.media("mob") {
+    max-width: 100%;
+  }
 }
 
 .pagination {
   justify-content: center;
   margin-top: 40px;
+}
+
+.loader {
+  margin: 0 auto;
+  margin-top: var(--space-l);
+}
+
+.subtitle {
+  margin-top: var(--space-l);
 }

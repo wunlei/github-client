@@ -1,8 +1,11 @@
 @use "styles/mixins";
 
 .languages {
+  width: 100%;
+  max-width: 280px;
   @include mixins.space-y(var(--space-xxs));
 }
+
 .percentageBar {
   display: flex;
   height: 8px;

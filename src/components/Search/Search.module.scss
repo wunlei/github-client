@@ -12,3 +12,11 @@
 .btnIcon {
   color: var(--color-white);
 }
+
+.btnClose {
+  visibility: hidden;
+}
+
+.btnCloseVisible {
+  visibility: initial;
+}
