@@ -2,20 +2,26 @@ import c from 'classnames';
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 import { memo, useEffect } from 'react';
+import Skeleton from 'components/Skeleton';
 import Typography from 'components/Typography';
 import LanguagesStore from 'store/LanguagesStore';
-import { useLocalStore } from 'store/hooks/useLocalStore';
+import { useLocalStoreApp } from 'store/hooks';
 import { LanguagesProps } from './Languages.types';
 import s from './Languages.module.scss';
 
 const Languages: React.FC<LanguagesProps> = observer(({ owner, repo }) => {
-  const store = useLocalStore(() => new LanguagesStore());
+  const store = useLocalStoreApp(() => new LanguagesStore());
 
   const { dataFormatted, fetchData } = store;
+  const { isLoading } = store.metaStore;
 
   useEffect(() => {
     fetchData({ owner, repo });
   }, [fetchData, owner, repo]);
+
+  if (isLoading) {
+    return <Skeleton width={250} height={200} />;
+  }
 
   if (!dataFormatted.length) {
     return null;

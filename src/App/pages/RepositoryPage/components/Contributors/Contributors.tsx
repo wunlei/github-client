@@ -3,16 +3,18 @@ import * as React from 'react';
 import Avatar from 'components/Avatar';
 import Button from 'components/Button';
 import Counter from 'components/Counter';
+import Skeleton from 'components/Skeleton';
 import Typography from 'components/Typography';
 import ContributorsStore from 'store/ContributorsStore';
-import { useLocalStore } from 'store/hooks/useLocalStore';
+import { useLocalStoreApp } from 'store/hooks';
 import { ContributorsProps } from './Contributors.types';
 import s from './Contributors.module.scss';
 
 const Contributors: React.FC<ContributorsProps> = observer(({ owner, repo }) => {
-  const store = useLocalStore(() => new ContributorsStore());
+  const store = useLocalStoreApp(() => new ContributorsStore());
 
   const { fetchData, hasHiddenItems, isAllVisible, toggleVisible, visibleItems, data } = store;
+  const { isLoading } = store.metaStore;
 
   const handleVisibleChange = () => {
     toggleVisible();
@@ -21,6 +23,10 @@ const Contributors: React.FC<ContributorsProps> = observer(({ owner, repo }) => 
   React.useEffect(() => {
     fetchData({ owner, repo });
   }, [fetchData, owner, repo]);
+
+  if (isLoading) {
+    return <Skeleton width={300} height={200} />;
+  }
 
   if (!data || !data.length) {
     return null;
@@ -51,7 +57,7 @@ const Contributors: React.FC<ContributorsProps> = observer(({ owner, repo }) => 
           ))}
         </ul>
         {hasHiddenItems && (
-          <Button variant="ghost" size="small" onClick={handleVisibleChange} className={s.btnShowMore}>
+          <Button variant="ghost" size="icon" onClick={handleVisibleChange} className={s.btnShowMore}>
             <Typography view="p-16" tag="span">
               {isAllVisible ? 'Show less' : 'Show more'}
             </Typography>
