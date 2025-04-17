@@ -1,15 +1,15 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import { getRepoLanguages } from 'api/api';
+import { getRepoLanguages } from 'api';
 import { GetRepoLanguagesParams, RepoLanguagesApi } from 'api/types';
 import MetaStore from 'store/MetaStore';
-import { ILocalStore } from 'store/hooks/useLocalStore';
-import { getLangPercents } from 'utils/utils';
+import { ILocalStore } from 'store/hooks';
+import { getLangPercents } from 'utils';
 
 type PrivateFields = '_data';
 
 class LanguagesStore implements ILocalStore {
-  readonly metaStore = new MetaStore();
   private _data: RepoLanguagesApi = {};
+  readonly metaStore = new MetaStore();
 
   constructor() {
     makeObservable<LanguagesStore, PrivateFields>(this, {
@@ -30,23 +30,23 @@ class LanguagesStore implements ILocalStore {
   }
 
   fetchData = async ({ owner, repo }: GetRepoLanguagesParams) => {
-    try {
-      this.metaStore.updateMeta('loading');
+    this.metaStore.updateMeta('loading');
+    const response = await getRepoLanguages({ owner, repo });
 
-      const data = await getRepoLanguages({ owner, repo });
-      runInAction(() => {
-        this._data = data;
+    runInAction(() => {
+      if (response.success) {
+        this._data = response.data;
         this.metaStore.updateMeta('success');
-      });
-    } catch {
-      this.metaStore.updateMeta('error');
-    }
+      } else {
+        this.metaStore.updateMeta('error');
+      }
+    });
   };
 
-  destroy(): void {
+  destroy = (): void => {
     this.metaStore.destroy();
     this._data = {};
-  }
+  };
 }
 
 export default LanguagesStore;

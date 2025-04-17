@@ -1,17 +1,17 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import { getRepoContributors } from 'api/api';
+import { getRepoContributors } from 'api';
 import { GetRepoContributorsParams } from 'api/types';
 import MetaStore from 'store/MetaStore';
-import { ILocalStore } from 'store/hooks/useLocalStore';
-import { UserModel, normalizeUser } from 'store/models/api/user';
+import { ILocalStore } from 'store/hooks';
+import { normalizeUser, UserModel } from 'store/models/api';
 
 type PrivateFields = '_data' | '_isAllVisible' | '_maxShownCount';
 
 class ContributorsStore implements ILocalStore {
-  readonly metaStore = new MetaStore();
   private _data: UserModel[] = [];
   private _isAllVisible: boolean = false;
   private _maxShownCount: number = 3;
+  readonly metaStore = new MetaStore();
 
   constructor() {
     makeObservable<ContributorsStore, PrivateFields>(this, {
@@ -52,25 +52,27 @@ class ContributorsStore implements ILocalStore {
   };
 
   fetchData = async ({ owner, repo }: GetRepoContributorsParams) => {
-    try {
-      this.metaStore.updateMeta('loading');
-      this._data = [];
-      const result = await getRepoContributors({ owner, repo });
-      runInAction(() => {
-        this._data = result.map(normalizeUser);
+    this.metaStore.updateMeta('loading');
+    this._data = [];
+    const response = await getRepoContributors({ owner, repo });
+
+    runInAction(() => {
+      if (response.success) {
+        this._data = response.data.map(normalizeUser);
+
         this.metaStore.updateMeta('success');
-      });
-    } catch {
-      this.metaStore.updateMeta('error');
-    }
+      } else {
+        this.metaStore.updateMeta('error');
+      }
+    });
   };
 
-  destroy(): void {
+  destroy = (): void => {
     this.metaStore.destroy();
     this._data = [];
     this._isAllVisible = false;
     this._maxShownCount = 3;
-  }
+  };
 }
 
 export default ContributorsStore;

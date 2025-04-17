@@ -1,4 +1,5 @@
 import axios from 'axios';
+import fetchWrapper from 'api/utils';
 import {
   GetRepoContributorsParams,
   GetRepoLanguagesParams,
@@ -8,7 +9,9 @@ import {
   RepoApi,
   RepoContributorApi,
   RepoLanguagesApi,
-  ReposApi,
+  ResponseFail,
+  ResponseSuccess,
+  SearchUsersResponse,
   UserApi,
 } from './types';
 
@@ -24,92 +27,83 @@ const axiosInstance = axios.create({
 });
 
 export async function getReposByOrg({ org, type = 'all' }: GetReposByOrgParams) {
-  try {
-    const response = await axiosInstance.request<ReposApi>({
+  return await fetchWrapper(
+    axiosInstance.request<RepoApi[]>({
       url: `/orgs/${org}/repos`,
       method: 'get',
       params: {
         type,
       },
-    });
-
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw error;
-  }
+    }),
+  );
 }
 
 export async function getSingleRepo({ repo, owner }: GetSingleRepoParams) {
-  try {
-    const response = await axiosInstance.get<RepoApi>(`/repos/${owner}/${repo}`);
-
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw error;
-  }
+  return await fetchWrapper(axiosInstance.get<RepoApi>(`/repos/${owner}/${repo}`));
 }
 
 export async function getRepoLanguages({ repo, owner }: GetRepoLanguagesParams) {
-  try {
-    const response = await axiosInstance.get<RepoLanguagesApi>(`/repos/${owner}/${repo}/languages`);
-
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw error;
-  }
+  return await fetchWrapper(axiosInstance.get<RepoLanguagesApi>(`/repos/${owner}/${repo}/languages`));
 }
 
-export async function getRepoContributors({ repo, owner }: GetRepoContributorsParams) {
-  try {
-    const responseContributors = await axiosInstance.get<RepoContributorApi[]>(`/repos/${owner}/${repo}/contributors`);
+export async function getRepoContributors({
+  repo,
+  owner,
+}: GetRepoContributorsParams): Promise<ResponseFail | ResponseSuccess<UserApi[]>> {
+  const responseContributors = await fetchWrapper(
+    axiosInstance.get<RepoContributorApi[]>(`/repos/${owner}/${repo}/contributors`),
+  );
 
-    const usersPromises = responseContributors.data.map((data) => getUser(data.login));
-
-    return await Promise.all(usersPromises);
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw error;
+  if (!responseContributors.success) {
+    return responseContributors;
   }
+
+  const usersPromises = await Promise.all(responseContributors.data.map((data) => getUser(data.login)));
+
+  const result: UserApi[] = [];
+
+  usersPromises.forEach((user) => {
+    if (user.success) {
+      result.push(user.data);
+    }
+  });
+
+  return {
+    success: true,
+    data: result,
+    errorMessage: null,
+    status: 200,
+  };
 }
 
 export async function getUser(login: string) {
-  try {
-    const response = await axiosInstance.get<UserApi>(`/users/${login}`);
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw error;
-  }
+  return await fetchWrapper(axiosInstance.get<UserApi>(`/users/${login}`));
 }
 
 export async function getReadme({ repo, owner }: GetRepoReadmeParams) {
-  try {
-    const response = await axiosInstance.request<string>({
+  return await fetchWrapper(
+    axiosInstance.request<string>({
       url: `/repos/${owner}/${repo}/readme`,
       method: 'get',
       headers: {
         Accept: 'application/vnd.github.html+json',
       },
-    });
+    }),
+  );
+}
 
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw error;
-  }
+export async function searchUsers(name: string) {
+  return await fetchWrapper(axiosInstance.get<SearchUsersResponse>(`/search/users?q=${name}`));
+}
+
+export async function getUserRepos(name: string) {
+  return await fetchWrapper(
+    axiosInstance.get<RepoApi[]>(`users/${name}/repos`, {
+      params: {
+        per_page: 5,
+        page: 1,
+        sort: 'updated',
+      },
+    }),
+  );
 }

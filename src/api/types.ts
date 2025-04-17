@@ -1,4 +1,16 @@
-export type ReposApi = Array<RepoApi>;
+export type ResponseSuccess<T> = {
+  success: true;
+  errorMessage: null;
+  status: number;
+  data: T;
+};
+
+export type ResponseFail = {
+  success: false;
+  errorMessage: string;
+  status: number | null;
+  data: null;
+};
 
 export type RepoApi = {
   id: number;
@@ -12,6 +24,7 @@ export type RepoApi = {
   watchers_count: number;
   forks_count: number;
   topics: string[];
+  language: string | null;
 };
 
 export type OwnerApi = {
@@ -41,9 +54,28 @@ export type RepoContributorApi = Omit<UserApi, 'name'>;
 
 export type UserApi = {
   login: string;
+  id: number;
   avatar_url: string;
   html_url: string;
-  name: string;
+  name: string | null;
+  company: string | null;
+  blog: string;
+  location: string | null;
+  followers: number;
+  following: number;
+  public_repos: number;
+};
+
+export type SearchUserApi = {
+  login: string;
+  id: number;
+  avatar_url: string;
+};
+
+export type SearchUsersResponse = {
+  total_count: number;
+  incomplete_results: boolean;
+  items: SearchUserApi[];
 };
 
 export type GetReposByOrgParams = {

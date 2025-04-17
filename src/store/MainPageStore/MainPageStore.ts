@@ -1,11 +1,11 @@
 import { action, makeObservable, observable, computed, runInAction } from 'mobx';
-import { getReposByOrg } from 'api/api';
-import { repositoryTypes, RepositoryTypes } from 'config/repositoryTypes';
+import { getReposByOrg } from 'api';
+import { RepositoryTypes, repositoryTypes } from 'config/repositoryTypes';
 import FilterStore from 'store/FilterStore';
 import MetaStore from 'store/MetaStore';
 import PaginationStore from 'store/PaginationStore';
-import { ILocalStore } from 'store/hooks/useLocalStore';
-import { normalizeRepo, RepoModel } from 'store/models/api/repo';
+import { ILocalStore } from 'store/hooks';
+import { RepoModel, normalizeRepo } from 'store/models/api';
 
 type PrivateFields = '_repos' | '_orgName';
 
@@ -18,13 +18,13 @@ class MainPageStore implements ILocalStore {
 
   constructor() {
     makeObservable<MainPageStore, PrivateFields>(this, {
-      _repos: observable.ref,
       _orgName: observable,
+      _repos: observable.ref,
       orgName: computed,
       repos: computed,
       totalPages: computed,
-      fetchRepos: action,
       setOrgName: action,
+      fetchRepos: action,
       destroy: action,
     });
   }
@@ -41,32 +41,33 @@ class MainPageStore implements ILocalStore {
     return Math.ceil(this._repos.length / this.paginationStore.perPage);
   }
 
-  fetchRepos = async () => {
-    try {
-      this.metaStore.updateMeta('loading');
-      this._repos = [];
-      const result = await getReposByOrg({ org: this._orgName.trim(), type: this.filterStore.currValue });
-      runInAction(() => {
-        this._repos = result.map(normalizeRepo);
-        this.paginationStore.setItems(this._repos);
-        this.metaStore.updateMeta('success');
-      });
-    } catch {
-      this.metaStore.updateMeta('error');
-    }
-  };
-
   setOrgName = (e: string) => {
     this._orgName = e;
   };
 
-  destroy(): void {
-    this.metaStore.destroy();
-    this._orgName = '';
+  fetchRepos = async () => {
+    this.metaStore.updateMeta('loading');
     this._repos = [];
+    const response = await getReposByOrg({ org: this._orgName.trim(), type: this.filterStore.currValue });
+
+    runInAction(() => {
+      if (response.success) {
+        this._repos = response.data.map(normalizeRepo);
+        this.paginationStore.setItems(this._repos);
+        this.metaStore.updateMeta('success');
+      } else {
+        this.metaStore.updateMeta('error', response.errorMessage);
+      }
+    });
+  };
+
+  destroy = (): void => {
+    this.metaStore.destroy();
     this.filterStore.destroy();
     this.paginationStore.destroy();
-  }
+    this._orgName = '';
+    this._repos = [];
+  };
 }
 
 export default MainPageStore;
