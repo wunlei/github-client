@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from 'mobx';
-import { ILocalStore } from 'store/hooks/useLocalStore';
-import { paginateArray } from 'utils/utils';
+import { ILocalStore } from 'store/hooks/useLocalStoreApp';
+import { paginateArray } from 'utils';
 
 type PrivateFields = '_items' | '_currPageNum' | '_perPage';
 
@@ -66,11 +66,11 @@ class PaginationStore<T> implements ILocalStore {
     }
   };
 
-  destroy(): void {
+  destroy = (): void => {
     this._items = [];
     this._currPageNum = 1;
     this._perPage = 9;
-  }
+  };
 }
 
 export default PaginationStore;

@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable } from 'mobx';
-import { ILocalStore } from 'store/hooks/useLocalStore';
+import { ILocalStore } from 'store/hooks';
 
 type PrivateFields = '_currValue' | '_filterValues';
 
@@ -47,7 +47,7 @@ class FilterStore<T extends string> implements ILocalStore {
     this._currValue = this._filterValues[0];
   };
 
-  destroy(): void {}
+  destroy = (): void => {};
 }
 
 export default FilterStore;
