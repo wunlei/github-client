@@ -52,11 +52,10 @@ const Dropdown: React.FC<DropdownProps> = ({ options, value, disabled, onChange,
   }, [filter, isOpen, value]);
 
   return (
-    <div ref={containerRef} className={s.container}>
+    <div ref={containerRef} className={c(s.container, className)}>
       <Input
         ref={inputRef}
         value={inputValue}
-        className={className}
         disabled={disabled}
         placeholder={placeholder}
         afterSlot={
