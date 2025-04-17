@@ -1,20 +1,12 @@
 import { createBrowserRouter, Navigate } from 'react-router';
 import App from 'App/App';
 import { RouteErrorBoundary } from 'components/ErrorBoundary';
+import { routes } from 'config/router';
 import MainPage from 'pages/MainPage';
 import NotFound from 'pages/NotFound/NotFound';
 import RepositoryPage from 'pages/RepositoryPage';
 import { MainPageStoreProvider } from 'store/MainPageStore';
 import { RepositoryPageStoreProvider } from 'store/RepositoryPageStore';
-
-export const routes = {
-  home: '/',
-  notFound: '/404',
-  repos: {
-    mask: 'repos/:owner/:repo',
-    create: (owner: string, repo: string) => `repos/${owner}/${repo}`,
-  },
-};
 
 const router = createBrowserRouter([
   {
@@ -34,7 +26,6 @@ const router = createBrowserRouter([
   },
   {
     path: routes.repos.mask,
-
     element: (
       <RepositoryPageStoreProvider>
         <RepositoryPage />
