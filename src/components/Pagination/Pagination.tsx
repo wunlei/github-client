@@ -3,7 +3,7 @@ import * as React from 'react';
 import { memo, useState } from 'react';
 import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
-import { getRange } from 'utils/utils';
+import { getRange } from 'utils';
 import { PaginationProps } from './Pagination.types';
 import s from './Pagination.module.scss';
 

@@ -5,7 +5,7 @@ import Card from 'components/Card';
 import ErrorMsg from 'components/ErrorMsg';
 import StarIcon from 'components/icons/StarIcon';
 import { routes } from 'config/router';
-import { formatDate } from 'utils/utils';
+import { formatDate } from 'utils';
 import { ListProps } from './List.types';
 import s from './List.module.scss';
 

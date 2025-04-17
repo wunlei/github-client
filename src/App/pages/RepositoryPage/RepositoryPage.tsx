@@ -2,9 +2,6 @@ import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 import { useCallback } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
-import Readme from 'App/pages/RepositoryPage/components/Readme/Readme';
-import Stats from 'App/pages/RepositoryPage/components/Stats/Stats';
-import Topics from 'App/pages/RepositoryPage/components/Topics/Topics';
 import Avatar from 'components/Avatar';
 import Button from 'components/Button';
 import ErrorMsg from 'components/ErrorMsg';
@@ -14,10 +11,13 @@ import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import ChainIcon from 'components/icons/ChainIcon';
 import { routes } from 'config/router';
-import Contributors from 'pages/RepositoryPage/components/Contributors';
-import { useInitRepositoryPage } from 'pages/RepositoryPage/hooks';
 import { useRepositoryPageStore } from 'store/RepositoryPageStore';
+import Contributors from './components/Contributors';
 import Languages from './components/Languages/Languages';
+import Readme from './components/Readme';
+import Stats from './components/Stats/Stats';
+import Topics from './components/Topics/Topics';
+import { useInitRepositoryPage } from './hooks';
 import s from './RepositoryPage.module.scss';
 
 const RepositoryPage: React.FC = observer(() => {

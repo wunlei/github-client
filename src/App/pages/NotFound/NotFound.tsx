@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router';
 import Button from 'components/Button';
 import { routes } from 'config/router';
@@ -16,4 +17,4 @@ const NotFoundPage: React.FC = () => {
   );
 };
 
-export default NotFoundPage;
+export default memo(NotFoundPage);
