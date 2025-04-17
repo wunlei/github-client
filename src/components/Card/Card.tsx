@@ -1,6 +1,7 @@
 import c from 'classnames';
 import * as React from 'react';
 import { memo } from 'react';
+import ImageLoader from 'components/ImageLoader';
 import Typography from 'components/Typography';
 import { CardProps } from './Card.types';
 import s from './Card.module.scss';
@@ -18,7 +19,7 @@ const Card: React.FC<CardProps> = ({
 }) => (
   <div className={c(s.card, className)} onClick={onClick} {...props}>
     <div className={s.imageContainer}>
-      <img className={s.img} src={image} alt="" />
+      <ImageLoader src={image} alt={title || ''} classname={s.img} />
     </div>
     <div className={s.content}>
       <div className={s.main}>
@@ -27,23 +28,29 @@ const Card: React.FC<CardProps> = ({
             {captionSlot}
           </Typography>
         )}
-        <Typography tag="h3" view="p-20" weight="medium" color="primary" maxLines={2}>
-          {title}
-        </Typography>
-        <Typography view="p-16" color="secondary" maxLines={3} className={s.subtitle}>
-          {subtitle}
-        </Typography>
-      </div>
-      <div className={s.footer}>
-        {contentSlot && (
-          <div className={s.contentSlot}>
-            <Typography view="p-18" weight="bold" tag="div">
-              {contentSlot}
-            </Typography>
-          </div>
+        {title && (
+          <Typography tag="h3" view="p-20" weight="medium" color="primary" maxLines={2}>
+            {title}
+          </Typography>
         )}
-        {actionSlot}
+        {subtitle && (
+          <Typography view="p-16" color="secondary" maxLines={3} className={s.subtitle}>
+            {subtitle}
+          </Typography>
+        )}
       </div>
+      {(contentSlot || actionSlot) && (
+        <div className={s.footer}>
+          {contentSlot && (
+            <div className={s.contentSlot}>
+              <Typography view="p-18" weight="bold" tag="div">
+                {contentSlot}
+              </Typography>
+            </div>
+          )}
+          {actionSlot}
+        </div>
+      )}
     </div>
   </div>
 );
