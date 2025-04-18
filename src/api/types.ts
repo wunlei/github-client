@@ -1,9 +1,9 @@
-export type ResponseSuccess<T> = {
+import { AxiosResponse } from 'axios';
+
+export interface ResponseSuccess<T> extends AxiosResponse<T> {
   success: true;
   errorMessage: null;
-  status: number;
-  data: T;
-};
+}
 
 export type ResponseFail = {
   success: false;
@@ -11,6 +11,8 @@ export type ResponseFail = {
   status: number | null;
   data: null;
 };
+
+export type ResponseAxios<T> = ResponseSuccess<T> | ResponseFail;
 
 export type RepoApi = {
   id: number;

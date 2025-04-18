@@ -1,5 +1,4 @@
-import axios from 'axios';
-import fetchWrapper from 'api/utils';
+import axiosInstance from 'api/instance';
 import {
   GetRepoContributorsParams,
   GetRepoLanguagesParams,
@@ -9,49 +8,35 @@ import {
   RepoApi,
   RepoContributorApi,
   RepoLanguagesApi,
-  ResponseFail,
-  ResponseSuccess,
   SearchUsersResponse,
   UserApi,
+  ResponseAxios,
 } from './types';
 
-const AUTH_TOKEN: string | undefined = import.meta.env.VITE_AUTH_TOKEN;
-
-const axiosInstance = axios.create({
-  baseURL: 'https://api.github.com/',
-  headers: {
-    'X-GitHub-Api-Version': '2022-11-28',
-    Authorization: AUTH_TOKEN && `Bearer ${AUTH_TOKEN}`,
-    Accept: 'application/vnd.github+json',
-  },
-});
-
-export async function getReposByOrg({ org, type = 'all' }: GetReposByOrgParams) {
-  return await fetchWrapper(
-    axiosInstance.request<RepoApi[]>({
-      url: `/orgs/${org}/repos`,
-      method: 'get',
-      params: {
-        type,
-      },
-    }),
-  );
+export async function getReposByOrg({ org, type = 'all' }: GetReposByOrgParams): Promise<ResponseAxios<RepoApi[]>> {
+  return axiosInstance.request({
+    url: `/orgs/${org}/repos`,
+    method: 'get',
+    params: {
+      type,
+    },
+  });
 }
 
-export async function getSingleRepo({ repo, owner }: GetSingleRepoParams) {
-  return await fetchWrapper(axiosInstance.get<RepoApi>(`/repos/${owner}/${repo}`));
+export async function getSingleRepo({ repo, owner }: GetSingleRepoParams): Promise<ResponseAxios<RepoApi>> {
+  return axiosInstance.get(`/repos/${owner}/${repo}`);
 }
 
-export async function getRepoLanguages({ repo, owner }: GetRepoLanguagesParams) {
-  return await fetchWrapper(axiosInstance.get<RepoLanguagesApi>(`/repos/${owner}/${repo}/languages`));
-}
-
-export async function getRepoContributors({
+export async function getRepoLanguages({
   repo,
   owner,
-}: GetRepoContributorsParams): Promise<ResponseFail | ResponseSuccess<UserApi[]>> {
-  const responseContributors = await fetchWrapper(
-    axiosInstance.get<RepoContributorApi[]>(`/repos/${owner}/${repo}/contributors`),
+}: GetRepoLanguagesParams): Promise<ResponseAxios<RepoLanguagesApi>> {
+  return axiosInstance.get(`/repos/${owner}/${repo}/languages`);
+}
+
+export async function getRepoContributors({ repo, owner }: GetRepoContributorsParams) {
+  const responseContributors: ResponseAxios<RepoContributorApi[]> = await axiosInstance.get(
+    `/repos/${owner}/${repo}/contributors`,
   );
 
   if (!responseContributors.success) {
@@ -76,34 +61,30 @@ export async function getRepoContributors({
   };
 }
 
-export async function getUser(login: string) {
-  return await fetchWrapper(axiosInstance.get<UserApi>(`/users/${login}`));
+export async function getUser(login: string): Promise<ResponseAxios<UserApi>> {
+  return axiosInstance.get(`/users/${login}`);
 }
 
-export async function getReadme({ repo, owner }: GetRepoReadmeParams) {
-  return await fetchWrapper(
-    axiosInstance.request<string>({
-      url: `/repos/${owner}/${repo}/readme`,
-      method: 'get',
-      headers: {
-        Accept: 'application/vnd.github.html+json',
-      },
-    }),
-  );
+export async function getReadme({ repo, owner }: GetRepoReadmeParams): Promise<ResponseAxios<string>> {
+  return axiosInstance.request({
+    url: `/repos/${owner}/${repo}/readme`,
+    method: 'get',
+    headers: {
+      Accept: 'application/vnd.github.html+json',
+    },
+  });
 }
 
-export async function searchUsers(name: string) {
-  return await fetchWrapper(axiosInstance.get<SearchUsersResponse>(`/search/users?q=${name}`));
+export async function searchUsers(name: string): Promise<ResponseAxios<SearchUsersResponse>> {
+  return axiosInstance.get(`/search/users?q=${name}`);
 }
 
-export async function getUserRepos(name: string) {
-  return await fetchWrapper(
-    axiosInstance.get<RepoApi[]>(`users/${name}/repos`, {
-      params: {
-        per_page: 5,
-        page: 1,
-        sort: 'updated',
-      },
-    }),
-  );
+export async function getUserRepos(name: string): Promise<ResponseAxios<RepoApi[]>> {
+  return axiosInstance.get(`users/${name}/repos`, {
+    params: {
+      per_page: 5,
+      page: 1,
+      sort: 'updated',
+    },
+  });
 }
