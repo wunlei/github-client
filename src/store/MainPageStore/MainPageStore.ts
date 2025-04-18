@@ -4,6 +4,7 @@ import { RepositoryTypes, repositoryTypes } from 'config/repositoryTypes';
 import FilterStore from 'store/FilterStore';
 import MetaStore from 'store/MetaStore';
 import PaginationStore from 'store/PaginationStore';
+import VisitedReposStore from 'store/VisitedReposStore';
 import { ILocalStore } from 'store/hooks';
 import { RepoModel, normalizeRepo } from 'store/models/api';
 
@@ -15,6 +16,7 @@ class MainPageStore implements ILocalStore {
   readonly metaStore = new MetaStore();
   readonly paginationStore = new PaginationStore<RepoModel>();
   readonly filterStore = new FilterStore<RepositoryTypes>(repositoryTypes[0], repositoryTypes);
+  readonly visitedReposStore = new VisitedReposStore();
 
   constructor() {
     makeObservable<MainPageStore, PrivateFields>(this, {

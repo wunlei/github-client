@@ -20,7 +20,8 @@ const MainPage: React.FC = observer(() => {
   const store = useMainPageStore();
 
   const { currPageItems } = store.paginationStore;
-  const { isLoading, isError, isInitial } = store.metaStore;
+  const { isLoading, isError, isInitial, errorMessage } = store.metaStore;
+  const { data: visitedRepos } = store.visitedReposStore;
 
   const handleTypeChange = useCallback(
     (option: Option) => {
@@ -38,7 +39,7 @@ const MainPage: React.FC = observer(() => {
     [searchParams, setSearchParams],
   );
 
-  const handleGetRepos = useCallback(
+  const handleOrgChange = useCallback(
     (org: string) => {
       searchParams.set('org', org.trim());
       setSearchParams(searchParams);
@@ -48,6 +49,9 @@ const MainPage: React.FC = observer(() => {
 
   useInitMainPage();
 
+  const showVisited = isInitial && visitedRepos.length > 0;
+  const showRepos = !isLoading && !isError && !isInitial;
+
   return (
     <PageLayout className={s.page}>
       <div className={s.content}>
@@ -56,11 +60,19 @@ const MainPage: React.FC = observer(() => {
         </Typography>
         <div className={s.filters}>
           <TypeDropdown className={s.dropdown} onChange={handleTypeChange} />
-          <ReposSearch onChange={handleGetRepos} />
+          <ReposSearch onChange={handleOrgChange} />
         </div>
         {isLoading && <Loader className={s.loader} />}
-        {isError && <ErrorMsg />}
-        {!isLoading && !isError && !isInitial && (
+        {isError && <ErrorMsg message={errorMessage || ''} />}
+        {showVisited && (
+          <>
+            <Typography weight="bold" view="p-20" className={s.subtitle}>
+              Last 5 visited repos:
+            </Typography>
+            <List repos={visitedRepos} />
+          </>
+        )}
+        {showRepos && (
           <>
             <List repos={currPageItems} />
             <ReposPagination onChange={handlePageChange} className={s.pagination} />
