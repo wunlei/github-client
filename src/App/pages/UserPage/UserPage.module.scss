@@ -12,23 +12,9 @@
   @include mixins.space-y(var(--space-xl));
 }
 
-.header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  @include mixins.space-x(var(--space-m));
-}
-
 .headerName {
   display: flex;
   flex-direction: column;
-}
-
-.arrowBack {
-  transform: rotate(90deg);
-  &:hover {
-    color: var(--color-brand-hover);
-  }
 }
 
 .main {
