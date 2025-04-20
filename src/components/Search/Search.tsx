@@ -15,7 +15,7 @@ const Search: React.FC<SearchProps> = ({ value, placeholder, handleSearch }) => 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (e.target instanceof HTMLInputElement) {
-        handleSearch(e.target.value);
+        handleSearch(e.target.value.trim());
       }
     }
   };
