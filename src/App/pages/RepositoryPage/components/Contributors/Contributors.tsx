@@ -49,7 +49,7 @@ const Contributors: React.FC<ContributorsProps> = observer(({ owner, repo }) => 
                 <Typography view="p-16" weight="bold" tag="span">
                   {el.login}
                 </Typography>
-                <Typography view="p-16" color="secondary" tag="span">
+                <Typography view="p-16" color="secondary" tag="span" className={s.name}>
                   {el.name}
                 </Typography>
               </a>
