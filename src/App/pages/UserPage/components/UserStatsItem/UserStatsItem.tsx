@@ -8,7 +8,7 @@ import { UserStatsItemProps } from './UserStatsItem.types';
 import s from './UserStatsItem.module.scss';
 
 const Items = {
-  blog: { icon: <ChainIcon width={24} height={24} /> },
+  link: { icon: <ChainIcon width={24} height={24} /> },
   orgs: { icon: <OrganizationIcon /> },
   location: { icon: <LocationIcon /> },
   followers: { icon: <PeopleIcon /> },

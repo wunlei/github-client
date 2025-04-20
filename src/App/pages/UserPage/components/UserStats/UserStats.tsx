@@ -7,9 +7,18 @@ import Typography from 'components/Typography';
 import { formatNumber } from 'utils';
 import s from './UserStats.module.scss';
 
-const UserStats: React.FC<UserStatsProps> = ({ followers, following, company, blog, location }) => {
+const UserStats: React.FC<UserStatsProps> = ({ followers, following, company, blog, location, link }) => {
   return (
     <div className={s.container}>
+      {link && (
+        <a target="_blank" rel="noreferrer" href={link}>
+          <UserStatsItem type="link">
+            <Typography className={s.userLink} weight="bold">
+              {link}
+            </Typography>
+          </UserStatsItem>
+        </a>
+      )}
       <UserStatsItem type="followers">
         <Typography view="p-14">
           <Typography weight="bold" inline tag="span">
@@ -31,10 +40,10 @@ const UserStats: React.FC<UserStatsProps> = ({ followers, following, company, bl
       {company && <Organizations orgs={company} />}
 
       {blog && (
-        <UserStatsItem type="blog">
+        <UserStatsItem type="link">
           {' '}
           <Typography>
-            <a target="_blank" rel="noreferrer" href={blog}>
+            <a target="_blank" rel="noreferrer" href={blog} className={s.link}>
               {blog}
             </a>
           </Typography>

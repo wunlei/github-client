@@ -61,7 +61,7 @@ const UserPage: React.FC = observer(() => {
     return null;
   }
 
-  const { avatarUrl, login, name, blog, company, followers, following, location } = data;
+  const { avatarUrl, login, name, blog, company, followers, following, location, htmlUrl } = data;
 
   return (
     <PageLayout>
@@ -79,7 +79,14 @@ const UserPage: React.FC = observer(() => {
           </div>
         </div>
         <div className={s.main}>
-          <UserStats followers={followers} following={following} blog={blog} company={company} location={location} />
+          <UserStats
+            followers={followers}
+            following={following}
+            blog={blog}
+            company={company}
+            location={location}
+            link={htmlUrl}
+          />
         </div>
         <Repo username={username} />
       </div>

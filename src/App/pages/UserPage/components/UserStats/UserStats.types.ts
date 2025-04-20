@@ -4,4 +4,5 @@ export type UserStatsProps = {
   company: string | null;
   blog?: string;
   location: string | null;
+  link?: string;
 };
