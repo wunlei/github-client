@@ -5,7 +5,7 @@ import Card from 'components/Card';
 import ErrorMsg from 'components/ErrorMsg';
 import StarIcon from 'components/icons/StarIcon';
 import { routes } from 'config/router';
-import { formatDate } from 'utils';
+import { formatDate, formatNumber } from 'utils';
 import { ListProps } from './List.types';
 import s from './List.module.scss';
 
@@ -24,7 +24,7 @@ const List: React.FC<ListProps> = ({ repos }) => {
               <div className={s.cardHeader}>
                 <div className={s.starsContainer}>
                   <StarIcon width={14} height={14} className={s.starIcon} />
-                  <span>{el.stargazersCount}</span>
+                  <span>{formatNumber(el.stargazersCount)}</span>
                 </div>
                 <div>Updated on {formatDate(el.updatedAt)}</div>
               </div>
