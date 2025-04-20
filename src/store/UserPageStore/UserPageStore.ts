@@ -1,6 +1,7 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { getUser } from 'api';
 import MetaStore from 'store/MetaStore';
+import VisitedUsersStore from 'store/VisitedUsersStore';
 import { ILocalStore } from 'store/hooks/useLocalStoreApp';
 import { normalizeUser, UserModel } from 'store/models/api';
 
@@ -10,6 +11,7 @@ class UserPageStore implements ILocalStore {
   private _username = '';
   private _data: UserModel | null = null;
   readonly metaStore = new MetaStore();
+  readonly visitedUsersStore = new VisitedUsersStore();
 
   constructor() {
     makeObservable<UserPageStore, PrivateFields>(this, {
@@ -39,6 +41,7 @@ class UserPageStore implements ILocalStore {
       if (response.success) {
         this._data = normalizeUser(response.data);
         this.metaStore.updateMeta('success');
+        this.visitedUsersStore.addUser(this._data);
       } else {
         this.metaStore.updateMeta('error', response.errorMessage);
       }

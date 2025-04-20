@@ -2,6 +2,7 @@ import { action, makeObservable, observable, computed, runInAction } from 'mobx'
 import { searchUsers } from 'api';
 import MetaStore from 'store/MetaStore';
 import PaginationStore from 'store/PaginationStore';
+import VisitedUsersStore from 'store/VisitedUsersStore';
 import { ILocalStore } from 'store/hooks/useLocalStoreApp';
 import { normalizeSearchUser, SearchUserModel } from 'store/models/api/searchUser';
 
@@ -12,6 +13,7 @@ class UserSearchPageStore implements ILocalStore {
   private _users: SearchUserModel[] = [];
   readonly metaStore = new MetaStore();
   readonly paginationStore = new PaginationStore<SearchUserModel>();
+  readonly visitedUsersStore = new VisitedUsersStore();
 
   constructor() {
     makeObservable<UserSearchPageStore, PrivateFields>(this, {
@@ -22,6 +24,7 @@ class UserSearchPageStore implements ILocalStore {
       totalPages: computed,
       setUsername: action,
       fetchUsers: action,
+      reset: action,
       destroy: action,
     });
   }
@@ -58,9 +61,17 @@ class UserSearchPageStore implements ILocalStore {
     });
   };
 
+  reset = () => {
+    this._username = '';
+    this._users = [];
+    this.metaStore.updateMeta('initial');
+    this.paginationStore.setCurrPage(1);
+  };
+
   destroy = (): void => {
     this.metaStore.destroy();
     this.paginationStore.destroy();
+    this.visitedUsersStore.destroy();
     this._username = '';
     this._users = [];
   };
