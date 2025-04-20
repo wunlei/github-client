@@ -38,7 +38,7 @@ const Repo: React.FC<RepoProps> = observer(({ username }) => {
               <div className={s.header}>
                 <RepoIcon width={16} height={16} />
                 <Typography view="p-18" color="accent">
-                  <a href={htmlUrl} target="_blank" rel="noreferrer">
+                  <a href={htmlUrl} target="_blank" rel="noreferrer" className={s.link}>
                     {name}
                   </a>
                 </Typography>

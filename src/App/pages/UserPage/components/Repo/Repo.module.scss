@@ -57,3 +57,8 @@
 .footer {
   color: var(--color-gray-500);
 }
+
+.link {
+  position: relative;
+  @include mixins.underline($color: var(--color-brand));
+}

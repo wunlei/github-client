@@ -1,5 +1,12 @@
+@use "styles/mixins";
+
 .wrapper {
   display: flex;
   flex-wrap: wrap;
   column-gap: var(--space-xxs);
+}
+
+.link {
+  position: relative;
+  @include mixins.underline();
 }

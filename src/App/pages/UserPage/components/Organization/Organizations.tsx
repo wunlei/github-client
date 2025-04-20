@@ -12,7 +12,14 @@ const Organizations: React.FC<OrganizationsProps> = ({ orgs }) => {
       <div className={s.wrapper}>
         {orgs.split(', ').map((org, i, arr) => {
           const separator = i < arr.length - 1 ? ', ' : '';
-          const el = org[0] === '@' ? <Link to={`/?org=${org.slice(1)}`}>{org}</Link> : org;
+          const el =
+            org[0] === '@' ? (
+              <Link to={`/?org=${org.slice(1)}`} className={s.link}>
+                {org}
+              </Link>
+            ) : (
+              org
+            );
 
           return (
             <Typography weight="bold" key={org}>
