@@ -17,6 +17,7 @@ class UserPageStore implements ILocalStore {
       _data: observable.ref,
       data: computed,
       setUsername: action,
+      fetchUser: action,
       destroy: action,
     });
   }
