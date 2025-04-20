@@ -31,8 +31,12 @@ const UserSearchPage: React.FC = observer(() => {
   const handleUserChange = useCallback(
     (username: string) => {
       searchParams.set('user', username);
+      if (searchParams.get('page')) {
+        searchParams.set('page', '1');
+      }
       setSearchParams(searchParams);
     },
+
     [searchParams, setSearchParams],
   );
 
