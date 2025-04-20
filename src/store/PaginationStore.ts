@@ -61,9 +61,7 @@ class PaginationStore<T> implements ILocalStore {
 
   setItems = (items: T[]) => {
     this._items = items;
-    if (this.totalPages < this._currPageNum) {
-      this._currPageNum = 1;
-    }
+    this._currPageNum = 1;
   };
 
   destroy = (): void => {

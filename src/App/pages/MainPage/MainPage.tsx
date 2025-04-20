@@ -20,7 +20,7 @@ const MainPage: React.FC = observer(() => {
   const store = useMainPageStore();
 
   const { currPageItems } = store.paginationStore;
-  const { isLoading, isError, isInitial } = store.metaStore;
+  const { isLoading, isError, isInitial, errorMessage } = store.metaStore;
 
   const handleTypeChange = useCallback(
     (option: Option) => {
@@ -41,12 +41,17 @@ const MainPage: React.FC = observer(() => {
   const handleGetRepos = useCallback(
     (org: string) => {
       searchParams.set('org', org.trim());
+      if (searchParams.get('page')) {
+        searchParams.set('page', '1');
+      }
       setSearchParams(searchParams);
     },
     [searchParams, setSearchParams],
   );
 
   useInitMainPage();
+
+  const showRepos = !isLoading && !isError && !isInitial;
 
   return (
     <PageLayout className={s.page}>
@@ -59,8 +64,8 @@ const MainPage: React.FC = observer(() => {
           <ReposSearch onChange={handleGetRepos} />
         </div>
         {isLoading && <Loader className={s.loader} />}
-        {isError && <ErrorMsg />}
-        {!isLoading && !isError && !isInitial && (
+        {isError && <ErrorMsg message={errorMessage || ''} />}
+        {showRepos && (
           <>
             <List repos={currPageItems} />
             <ReposPagination onChange={handlePageChange} className={s.pagination} />
