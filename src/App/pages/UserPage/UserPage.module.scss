@@ -1,0 +1,65 @@
+@use "styles/mixins";
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--space-l);
+  @include mixins.space-y(var(--space-xl));
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  @include mixins.space-x(var(--space-m));
+}
+
+.headerName {
+  display: flex;
+  flex-direction: column;
+}
+
+.arrowBack {
+  transform: rotate(90deg);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  @include mixins.space-y(var(--space-l));
+}
+
+.link {
+  display: flex;
+  @include mixins.space-x(var(--space-xxs));
+}
+
+.linkText {
+  color: var(--color-blue-200);
+}
+
+.contentFooter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  column-gap: var(--space-xxs);
+  width: 80%;
+  @include mixins.space-y(var(--space-l));
+}
+
+.followers {
+  display: flex;
+  flex-wrap: wrap;
+  @include mixins.space-x(var(--space-xxs));
+}
+
+.orgsWrapper {
+  display: flex;
+  align-items: center;
+  @include mixins.space-x(var(--space-xxs));
+}
