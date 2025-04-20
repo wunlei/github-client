@@ -47,7 +47,9 @@ class FilterStore<T extends string> implements ILocalStore {
     this._currValue = this._filterValues[0];
   };
 
-  destroy = (): void => {};
+  destroy = (): void => {
+    this._currValue = this._filterValues[0];
+  };
 }
 
 export default FilterStore;
