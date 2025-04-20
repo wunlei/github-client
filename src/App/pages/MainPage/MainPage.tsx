@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useLocation, useSearchParams } from 'react-router';
 import { Option } from 'components/Dropdown/Dropdown.types';
 import ErrorMsg from 'components/ErrorMsg';
@@ -20,10 +20,10 @@ const MainPage: React.FC = observer(() => {
   const [searchParams, setSearchParams] = useSearchParams();
   const store = useMainPageStore();
 
-  const { destroy } = store;
+  const { reset } = store;
 
   const { currPageItems } = store.paginationStore;
-  const { isLoading, isError, isInitial, errorMessage } = store.metaStore;
+  const { isLoading, isError, isSuccess, isInitial, errorMessage } = store.metaStore;
   const { data: visitedRepos } = store.visitedReposStore;
 
   const handleTypeChange = useCallback(
@@ -53,16 +53,16 @@ const MainPage: React.FC = observer(() => {
     [searchParams, setSearchParams],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (location.search == '' && location.key !== 'default') {
-      destroy();
+      reset();
     }
-  }, [destroy, location.search, location.key]);
+  }, [reset, location.search, location.key]);
 
   useInitMainPage();
 
   const showVisited = isInitial && visitedRepos.length > 0;
-  const showRepos = !isLoading && !isError && !isInitial;
+  const showRepos = isSuccess && !isInitial;
 
   return (
     <PageLayout className={s.page}>
@@ -79,7 +79,7 @@ const MainPage: React.FC = observer(() => {
         {showVisited && (
           <>
             <Typography weight="bold" view="p-20" className={s.subtitle}>
-              Last 5 visited repos:
+              Recently viewed repos:
             </Typography>
             <List repos={visitedRepos} />
           </>
