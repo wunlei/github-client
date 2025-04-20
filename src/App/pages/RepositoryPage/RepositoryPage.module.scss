@@ -21,6 +21,9 @@
 
 .arrowBack {
   transform: rotate(90deg);
+  &:hover {
+    color: var(--color-brand-hover);
+  }
 }
 
 .main {
@@ -35,7 +38,9 @@
 }
 
 .linkText {
+  position: relative;
   color: var(--color-blue-200);
+  @include mixins.underline($color: var(--color-blue-200));
 }
 
 .contentFooter {

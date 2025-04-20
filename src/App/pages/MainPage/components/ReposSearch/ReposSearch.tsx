@@ -9,7 +9,7 @@ const ReposSearch: React.FC<ReposSearchProps> = observer(({ onChange }) => {
   const { orgName, setOrgName, fetchRepos } = store;
 
   const handleGetRepos = (org: string) => {
-    if (!org) {
+    if (!org || org === orgName) {
       return;
     }
     setOrgName(org);

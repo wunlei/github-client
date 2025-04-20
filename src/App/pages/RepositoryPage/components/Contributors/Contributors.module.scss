@@ -16,6 +16,13 @@
   flex-wrap: wrap;
   align-items: center;
   @include mixins.space-x(var(--space-xxs));
+
+  &:hover {
+    color: var(--color-blue-200);
+    .name {
+      color: var(--color-blue-200);
+    }
+  }
 }
 
 .btnShowMore {

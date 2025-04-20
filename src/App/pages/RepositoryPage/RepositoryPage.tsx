@@ -27,7 +27,7 @@ const RepositoryPage: React.FC = observer(() => {
 
   const store = useRepositoryPageStore();
   const { repoData } = store;
-  const { isLoading, isError } = store.metaStore;
+  const { isLoading, isError, errorMessage } = store.metaStore;
 
   const handleNavigateBack = useCallback(() => {
     if (location.key !== 'default') {
@@ -56,7 +56,7 @@ const RepositoryPage: React.FC = observer(() => {
   if (isError) {
     return (
       <PageLayout>
-        <ErrorMsg />
+        <ErrorMsg message={errorMessage || ''} />
       </PageLayout>
     );
   }

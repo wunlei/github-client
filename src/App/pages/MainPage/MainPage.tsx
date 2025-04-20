@@ -42,6 +42,9 @@ const MainPage: React.FC = observer(() => {
   const handleOrgChange = useCallback(
     (org: string) => {
       searchParams.set('org', org.trim());
+      if (searchParams.get('page')) {
+        searchParams.set('page', '1');
+      }
       setSearchParams(searchParams);
     },
     [searchParams, setSearchParams],

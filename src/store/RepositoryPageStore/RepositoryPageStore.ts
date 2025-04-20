@@ -82,8 +82,6 @@ class RepositoryPageStore implements ILocalStore {
       if (response.success) {
         this._readme = response.data;
         this.metaStore.updateMeta('success');
-      } else {
-        this.metaStore.updateMeta('error');
       }
     });
   };
