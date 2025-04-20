@@ -1,8 +1,6 @@
-import { RepoLanguages } from 'api/types';
+import { RepoLanguagesApi } from 'api/types';
 
-export const formatDate = (isoDate: string) => {
-  const date = new Date(isoDate);
-
+export const formatDate = (date: Date) => {
   return date.toLocaleDateString('en-GB', {
     month: 'short',
     day: 'numeric',
@@ -10,10 +8,18 @@ export const formatDate = (isoDate: string) => {
   });
 };
 
-export const getLangPercents = (languages: RepoLanguages) => {
+export const getLangPercents = (languages: RepoLanguagesApi) => {
   const sum = Object.values(languages).reduce((acc, curr) => acc + curr, 0);
+  const result: string[][] = [];
 
-  return Object.entries(languages).map(([lang, count]) => [lang, ((count * 100) / sum).toFixed(1)]);
+  Object.entries(languages).forEach(([lang, count]) => {
+    const percentage = (count * 100) / sum;
+    if (percentage > 1) {
+      result.push([lang, percentage.toFixed(1)]);
+    }
+  });
+
+  return result;
 };
 
 export const getRange = (start: number, end: number) => {
@@ -27,4 +33,8 @@ export const paginateArray = <T>(array: T[], perPage: number): T[][] => {
   }
   const pages = Math.ceil(array.length / perPage);
   return Array.from({ length: pages }, (_v, i) => array.slice(i * perPage, i * perPage + perPage));
+};
+
+export const formatNumber = (n: number) => {
+  return new Intl.NumberFormat('en', { notation: 'compact' }).format(n);
 };

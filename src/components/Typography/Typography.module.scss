@@ -11,6 +11,24 @@
   display: inline-block;
 }
 
+.tag-h1 {
+  @include mixins.media("md") {
+    font-size: 1.875em;
+  }
+  @include mixins.media("sm") {
+    font-size: 1.75em;
+  }
+}
+
+.tag-h2 {
+  @include mixins.media("md") {
+    font-size: 1.4em;
+  }
+  @include mixins.media("sm") {
+    font-size: 1.2em;
+  }
+}
+
 .view-title {
   font-weight: 700;
   font-size: 44px;
@@ -154,4 +172,10 @@
 
 .align-justify {
   text-align: justify;
+}
+
+.text {
+  & h2 {
+    font-size: 30px;
+  }
 }

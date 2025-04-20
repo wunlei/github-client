@@ -21,6 +21,9 @@
 
 .arrowBack {
   transform: rotate(90deg);
+  &:hover {
+    color: var(--color-brand-hover);
+  }
 }
 
 .main {
@@ -35,31 +38,16 @@
 }
 
 .linkText {
+  position: relative;
   color: var(--color-blue-200);
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xxs);
-}
-
-.statsContainer {
-  @include mixins.space-y(var(--space-xxs));
+  @include mixins.underline($color: var(--color-blue-200));
 }
 
 .contentFooter {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  column-gap: var(--space-xxs);
   width: 80%;
   @include mixins.space-y(var(--space-l));
-}
-
-.readmeContainer {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: var(--space-l);
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
 }

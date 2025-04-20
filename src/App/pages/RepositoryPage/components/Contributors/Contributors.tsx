@@ -1,25 +1,32 @@
+import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { getRepoContributors } from 'api/api';
-import { User } from 'api/types';
 import Avatar from 'components/Avatar';
+import Button from 'components/Button';
 import Counter from 'components/Counter';
+import Skeleton from 'components/Skeleton';
 import Typography from 'components/Typography';
+import ContributorsStore from 'store/ContributorsStore';
+import { useLocalStoreApp } from 'store/hooks';
 import { ContributorsProps } from './Contributors.types';
 import s from './Contributors.module.scss';
 
-const Contributors: React.FC<ContributorsProps> = ({ repo, owner }) => {
-  const [data, setData] = useState<User[]>();
+const Contributors: React.FC<ContributorsProps> = observer(({ owner, repo }) => {
+  const store = useLocalStoreApp(() => new ContributorsStore());
 
-  useEffect(() => {
-    const result = getRepoContributors({ repo, owner });
+  const { fetchData, hasHiddenItems, isAllVisible, toggleVisible, visibleItems, data } = store;
+  const { isLoading } = store.metaStore;
 
-    result.then((data) => {
-      if (data) {
-        setData(data.filter((el) => !!el));
-      }
-    });
-  }, [owner, repo]);
+  const handleVisibleChange = () => {
+    toggleVisible();
+  };
+
+  React.useEffect(() => {
+    fetchData({ owner, repo });
+  }, [fetchData, owner, repo]);
+
+  if (isLoading) {
+    return <Skeleton width={300} height={200} />;
+  }
 
   if (!data || !data.length) {
     return null;
@@ -35,21 +42,30 @@ const Contributors: React.FC<ContributorsProps> = ({ repo, owner }) => {
       </div>
       <div>
         <ul className={s.contributorList}>
-          {data.map((el) => (
-            <li key={el.login} className={s.contributor}>
-              <Avatar type="round" src={el.avatar_url} alt={el.login} />
-              <Typography view="p-16" weight="bold" tag="span">
-                {el.login}
-              </Typography>
-              <Typography view="p-16" color="secondary" tag="span">
-                {el.name}
-              </Typography>
+          {visibleItems.map((el) => (
+            <li key={el.login}>
+              <a href={el.htmlUrl} className={s.contributor} target="_blank" rel="noreferrer">
+                <Avatar type="round" src={el.avatarUrl} alt={el.login} />
+                <Typography view="p-16" weight="bold" tag="span">
+                  {el.login}
+                </Typography>
+                <Typography view="p-16" color="secondary" tag="span" className={s.name}>
+                  {el.name}
+                </Typography>
+              </a>
             </li>
           ))}
         </ul>
+        {hasHiddenItems && (
+          <Button variant="ghost" size="icon" onClick={handleVisibleChange} className={s.btnShowMore}>
+            <Typography view="p-16" tag="span">
+              {isAllVisible ? 'Show less' : 'Show more'}
+            </Typography>
+          </Button>
+        )}
       </div>
     </div>
   );
-};
+});
 
 export default Contributors;

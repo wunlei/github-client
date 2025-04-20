@@ -1,42 +1,57 @@
+import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import Pagination from 'App/pages/MainPage/components/Pagination';
-import { getReposByOrg } from 'api/api';
-import { Repos } from 'api/types';
-import Button from 'components/Button';
+import { useCallback } from 'react';
+import { useSearchParams } from 'react-router';
+import { Option } from 'components/Dropdown/Dropdown.types';
 import ErrorMsg from 'components/ErrorMsg';
-import Input from 'components/Input';
 import Loader from 'components/Loader';
-import MultiDropdown from 'components/MultiDropdown';
 import PageLayout from 'components/PageLayout';
 import Typography from 'components/Typography';
-import SearchIcon from 'components/icons/SearchIcon';
-import List from 'pages/MainPage/components/List';
+import { useInitMainPage } from 'pages/MainPage/hooks';
+import { useMainPageStore } from 'store/MainPageStore/';
+import List from './components/List';
+import ReposPagination from './components/ReposPagination';
+import ReposSearch from './components/ReposSearch';
+import TypeDropdown from './components/TypesDropdown';
 import s from './MainPage.module.scss';
 
-const org = 'ktsstudio';
+const MainPage: React.FC = observer(() => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const store = useMainPageStore();
 
-const MainPage: React.FC = () => {
-  const per_page = 9;
-  const [repos, setRepos] = useState<Repos>([]);
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [currPage, setCurrPage] = useState(1);
+  const { currPageItems } = store.paginationStore;
+  const { isLoading, isError, isInitial, errorMessage } = store.metaStore;
 
-  const handlePageChange = useCallback((n: number) => {
-    setCurrPage(n);
-  }, []);
+  const handleTypeChange = useCallback(
+    (option: Option) => {
+      searchParams.set('type', option.key);
+      setSearchParams(searchParams);
+    },
+    [searchParams, setSearchParams],
+  );
 
-  useEffect(() => {
-    setIsLoading(true);
+  const handlePageChange = useCallback(
+    (n: number) => {
+      searchParams.set('page', `${n}`);
+      setSearchParams(searchParams);
+    },
+    [searchParams, setSearchParams],
+  );
 
-    getReposByOrg({ org, per_page, page: currPage })
-      .then((repos) => setRepos(repos || []))
-      .catch((error) => setError(error))
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [currPage]);
+  const handleGetRepos = useCallback(
+    (org: string) => {
+      searchParams.set('org', org.trim());
+      if (searchParams.get('page')) {
+        searchParams.set('page', '1');
+      }
+      setSearchParams(searchParams);
+    },
+    [searchParams, setSearchParams],
+  );
+
+  useInitMainPage();
+
+  const showRepos = !isLoading && !isError && !isInitial;
 
   return (
     <PageLayout className={s.page}>
@@ -45,25 +60,20 @@ const MainPage: React.FC = () => {
           List of organization repositories
         </Typography>
         <div className={s.filters}>
-          <MultiDropdown className={s.dropdown} options={[]} value={[]} onChange={() => {}} getTitle={() => 'Type'} />
-          <div className={s.inputWrapper}>
-            <Input placeholder="Enter organization name" className={s.input} value={org} onChange={() => {}} />
-            <Button>
-              <SearchIcon className={s.btnIcon} />
-            </Button>
-          </div>
+          <TypeDropdown className={s.dropdown} onChange={handleTypeChange} />
+          <ReposSearch onChange={handleGetRepos} />
         </div>
-        {isLoading && <Loader />}
-        {error && <ErrorMsg message={error.message} />}
-        {!isLoading && !error && (
+        {isLoading && <Loader className={s.loader} />}
+        {isError && <ErrorMsg message={errorMessage || ''} />}
+        {showRepos && (
           <>
-            <List repos={repos}></List>
-            <Pagination isLastPage={repos.length < per_page} currPage={currPage} onChange={handlePageChange} />
+            <List repos={currPageItems} />
+            <ReposPagination onChange={handlePageChange} className={s.pagination} />
           </>
         )}
       </div>
     </PageLayout>
   );
-};
+});
 
 export default MainPage;

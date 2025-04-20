@@ -13,6 +13,9 @@
   @include mixins.media("md") {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  @include mixins.media("mob") {
+    grid-template-columns: 100%;
+  }
 }
 
 .starIcon {
@@ -35,4 +38,8 @@
   @include mixins.media("xl") {
     max-width: unset;
   }
+}
+
+.errorMsg {
+  grid-column: span 3;
 }

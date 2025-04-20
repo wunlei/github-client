@@ -3,11 +3,11 @@ import * as React from 'react';
 import { memo, useState } from 'react';
 import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
-import { getRange } from 'utils/utils';
+import { getRange } from 'utils';
 import { PaginationProps } from './Pagination.types';
 import s from './Pagination.module.scss';
 
-const Pagination: React.FC<PaginationProps> = ({ count = 3, offset = 3, current, onChange }) => {
+const Pagination: React.FC<PaginationProps> = ({ count, offset = 3, current, className, onChange }) => {
   const firstPage = 1;
 
   const [currPage, setCurrPage] = useState(current || firstPage);
@@ -43,7 +43,7 @@ const Pagination: React.FC<PaginationProps> = ({ count = 3, offset = 3, current,
   }
 
   return (
-    <div className={s.container}>
+    <div className={c(s.container, className)}>
       <button
         className={c(s.item, s.btn)}
         disabled={currPage === firstPage}
@@ -63,7 +63,7 @@ const Pagination: React.FC<PaginationProps> = ({ count = 3, offset = 3, current,
         }
         return (
           <button className={c(s.btn, e === currPage && s.btnActive)} key={e} onClick={() => handleChangeCurrPage(e)}>
-            <Typography view="p-18" className={s.item}>
+            <Typography view="p-18" className={s.item} tag="span">
               {e}
             </Typography>
           </button>

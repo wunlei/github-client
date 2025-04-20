@@ -1,18 +1,12 @@
 import { createBrowserRouter, Navigate } from 'react-router';
 import App from 'App/App';
 import { RouteErrorBoundary } from 'components/ErrorBoundary';
+import { routes } from 'config/router';
 import MainPage from 'pages/MainPage';
 import NotFound from 'pages/NotFound/NotFound';
 import RepositoryPage from 'pages/RepositoryPage';
-
-export const routes = {
-  home: '/',
-  notFound: '/404',
-  repos: {
-    mask: 'repos/:owner/:repo',
-    create: (owner: string, repo: string) => `repos/${owner}/${repo}`,
-  },
-};
+import { MainPageStoreProvider } from 'store/MainPageStore';
+import { RepositoryPageStoreProvider } from 'store/RepositoryPageStore';
 
 const router = createBrowserRouter([
   {
@@ -22,13 +16,22 @@ const router = createBrowserRouter([
     children: [
       {
         path: routes.home,
-        element: <MainPage />,
+        element: (
+          <MainPageStoreProvider>
+            <MainPage />
+          </MainPageStoreProvider>
+        ),
       },
     ],
   },
   {
     path: routes.repos.mask,
-    element: <RepositoryPage />,
+    element: (
+      <RepositoryPageStoreProvider>
+        <RepositoryPage />
+      </RepositoryPageStoreProvider>
+    ),
+
     errorElement: <RouteErrorBoundary />,
   },
   {

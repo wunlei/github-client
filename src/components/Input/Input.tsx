@@ -1,11 +1,11 @@
 import c from 'classnames';
 import { forwardRef, memo } from 'react';
-import { InputProps } from 'components/Input/Input.types';
+import { InputProps } from './Input.types';
 import s from './Input.module.scss';
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ value, afterSlot, className, disabled, onChange, ...props }, ref) => (
-    <label className={c(s.label, disabled && s.disabled, className)}>
+    <label className={c(s.label, disabled && s.disabled, className)} onClick={(e) => e.preventDefault()}>
       <input
         ref={ref}
         type="text"

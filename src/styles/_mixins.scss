@@ -1,6 +1,7 @@
 @use "sass:map";
 
 $breakpoints: (
+  "mob": 460px,
   "sm": 640px,
   "md": 768px,
   "lg": 1024px,
@@ -27,5 +28,27 @@ $breakpoints: (
 @mixin space-y($space) {
   & > :not(:last-child) {
     margin-bottom: $space;
+  }
+}
+
+@mixin underline($bottom: -2px, $height: 1px, $color: var(--color-black)) {
+  &::after {
+    position: absolute;
+    bottom: $bottom;
+    left: 0;
+    width: 100%;
+    height: $height;
+    background-color: $color;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+    content: "";
+  }
+
+  @media (hover: hover) {
+    &:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
   }
 }

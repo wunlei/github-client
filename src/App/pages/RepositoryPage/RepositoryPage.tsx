@@ -1,10 +1,9 @@
+import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router';
-import { getReadme, getSingleRepo } from 'api/api';
-import { Repo } from 'api/types';
+import { useCallback } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import Avatar from 'components/Avatar';
-import Badge from 'components/Badge';
+import Button from 'components/Button';
 import ErrorMsg from 'components/ErrorMsg';
 import Loader from 'components/Loader';
 import PageLayout from 'components/PageLayout';
@@ -12,41 +11,33 @@ import Typography from 'components/Typography';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import ChainIcon from 'components/icons/ChainIcon';
 import { routes } from 'config/router';
-import Contributors from 'pages/RepositoryPage/components/Contributors';
-import StatsItem from 'pages/RepositoryPage/components/StatsItem';
+import { useRepositoryPageStore } from 'store/RepositoryPageStore';
+import Contributors from './components/Contributors';
 import Languages from './components/Languages/Languages';
+import Readme from './components/Readme';
+import Stats from './components/Stats/Stats';
+import Topics from './components/Topics/Topics';
+import { useInitRepositoryPage } from './hooks';
 import s from './RepositoryPage.module.scss';
 
-const RepositoryPage: React.FC = () => {
+const RepositoryPage: React.FC = observer(() => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { owner, repo } = useParams();
-  const [repoData, setRepoData] = useState<Repo>();
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const [readme, setReadme] = useState('');
+  const store = useRepositoryPageStore();
+  const { repoData } = store;
+  const { isLoading, isError, errorMessage } = store.metaStore;
 
-  useEffect(() => {
-    if (!owner || !repo) {
-      navigate(routes.notFound);
-      return;
+  const handleNavigateBack = useCallback(() => {
+    if (location.key !== 'default') {
+      navigate(-1);
+    } else {
+      navigate(routes.home);
     }
+  }, [location.key, navigate]);
 
-    getSingleRepo({ repo, owner })
-      .then((data) => {
-        setRepoData(data);
-      })
-      .catch((error) => setError(error))
-      .finally(() => {
-        setIsLoading(false);
-      });
-
-    getReadme({ repo, owner }).then((data) => {
-      if (data) {
-        setReadme(data);
-      }
-    });
-  }, [navigate, owner, repo]);
+  useInitRepositoryPage();
 
   if (!owner || !repo) {
     return null;
@@ -62,59 +53,49 @@ const RepositoryPage: React.FC = () => {
     );
   }
 
-  if (!repoData || error) {
+  if (isError) {
     return (
       <PageLayout>
-        <ErrorMsg message={error?.message} />
+        <ErrorMsg message={errorMessage || ''} />
       </PageLayout>
     );
   }
 
-  const { forks_count, stargazers_count, watchers_count, html_url, topics } = repoData;
-  const { avatar_url } = repoData.owner;
+  if (!repoData) {
+    return null;
+  }
+
+  const { htmlUrl } = repoData;
+  const { avatarUrl } = repoData.owner;
 
   return (
     <PageLayout>
       <article className={s.content}>
         <div className={s.header}>
-          <Link to={routes.home}>
+          <Button size="icon" variant="ghost" onClick={handleNavigateBack}>
             <ArrowDownIcon width={32} height={32} color="accent" className={s.arrowBack} />
-          </Link>
-
-          <Avatar src={avatar_url} alt={owner} />
+          </Button>
+          <Avatar src={avatarUrl} alt={owner} />
           <Typography view="title">{repo}</Typography>
         </div>
         <div className={s.main}>
-          <a href={html_url} className={s.link} target="_blank" rel="noreferrer">
+          <a href={htmlUrl} className={s.link} target="_blank" rel="noreferrer">
             <ChainIcon />
             <Typography className={s.linkText} view="p-16" weight="bold">
               {repo}
             </Typography>
           </a>
-          <div className={s.tags}>
-            {topics.map((topic) => (
-              <Badge key={topic}>{topic}</Badge>
-            ))}
-          </div>
-          <div className={s.statsContainer}>
-            <StatsItem type={'stars'} number={stargazers_count} />
-            <StatsItem type={'watchers'} number={watchers_count} />
-            <StatsItem type={'forks'} number={forks_count} />
-          </div>
+          <Topics />
+          <Stats />
           <div className={s.contentFooter}>
-            <Languages repo={repo} owner={owner} />
-            <Contributors repo={repo} owner={owner} />
+            <Languages owner={owner} repo={repo} />
+            <Contributors owner={owner} repo={repo} />
           </div>
         </div>
-        <div className={s.readmeContainer}>
-          <Typography weight="bold" view="p-14">
-            README.md
-          </Typography>
-          <div dangerouslySetInnerHTML={{ __html: readme }}></div>
-        </div>
+        <Readme />
       </article>
     </PageLayout>
   );
-};
+});
 
 export default RepositoryPage;

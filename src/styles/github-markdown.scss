@@ -511,6 +511,10 @@
   word-wrap: normal;
 }
 
+.plain pre {
+  word-break: break-word;
+}
+
 .markdown-body .octicon {
   display: inline-block;
   overflow: visible !important;
