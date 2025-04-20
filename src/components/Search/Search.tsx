@@ -20,6 +20,11 @@ const Search: React.FC<SearchProps> = ({ value, placeholder, handleSearch }) => 
     }
   };
 
+  const handleReset = () => {
+    setInputValue('');
+    handleSearch('');
+  };
+
   useEffect(() => {
     setInputValue(value);
   }, [value]);
@@ -33,12 +38,7 @@ const Search: React.FC<SearchProps> = ({ value, placeholder, handleSearch }) => 
         onChange={setInputValue}
         onKeyDown={handleEnter}
         afterSlot={
-          <InputButton
-            classname={c(s.btnClose, inputValue && s.btnCloseVisible)}
-            onClick={() => {
-              setInputValue('');
-            }}
-          >
+          <InputButton classname={c(s.btnClose, inputValue && s.btnCloseVisible)} onClick={handleReset}>
             <CrossIcon width={20} height={20} />
           </InputButton>
         }
