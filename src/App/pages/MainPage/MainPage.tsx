@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 import { useCallback } from 'react';
-import { useSearchParams } from 'react-router';
+import { useLocation, useSearchParams } from 'react-router';
 import { Option } from 'components/Dropdown/Dropdown.types';
 import ErrorMsg from 'components/ErrorMsg';
 import Loader from 'components/Loader';
@@ -16,8 +16,11 @@ import TypeDropdown from './components/TypesDropdown';
 import s from './MainPage.module.scss';
 
 const MainPage: React.FC = observer(() => {
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const store = useMainPageStore();
+
+  const { destroy } = store;
 
   const { currPageItems } = store.paginationStore;
   const { isLoading, isError, isInitial, errorMessage } = store.metaStore;
@@ -49,6 +52,12 @@ const MainPage: React.FC = observer(() => {
     },
     [searchParams, setSearchParams],
   );
+
+  React.useEffect(() => {
+    if (location.search == '' && location.key !== 'default') {
+      destroy();
+    }
+  }, [destroy, location.search, location.key]);
 
   useInitMainPage();
 
