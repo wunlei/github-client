@@ -1,3 +1,4 @@
+import c from 'classnames';
 import * as React from 'react';
 import { memo } from 'react';
 import ChainIcon from 'components/icons/ChainIcon';
@@ -14,9 +15,9 @@ const Items = {
   followers: { icon: <PeopleIcon /> },
 };
 
-const UserStatsItem: React.FC<UserStatsItemProps> = ({ type, children }) => {
+const UserStatsItem: React.FC<UserStatsItemProps> = ({ type, classname, children }) => {
   return (
-    <div className={s.statsItem}>
+    <div className={c(s.statsItem, classname)}>
       {Items[type].icon}
       {children}
     </div>

@@ -26,6 +26,9 @@
 
 .arrowBack {
   transform: rotate(90deg);
+  &:hover {
+    color: var(--color-brand-hover);
+  }
 }
 
 .main {

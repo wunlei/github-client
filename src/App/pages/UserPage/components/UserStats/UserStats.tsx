@@ -19,7 +19,7 @@ const UserStats: React.FC<UserStatsProps> = ({ followers, following, company, bl
           </UserStatsItem>
         </a>
       )}
-      <UserStatsItem type="followers">
+      <UserStatsItem type="followers" classname={s.followers}>
         <Typography view="p-14">
           <Typography weight="bold" inline tag="span">
             {formatNumber(followers)}

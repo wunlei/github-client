@@ -4,7 +4,6 @@
   display: flex;
   flex-direction: column;
   row-gap: var(--space-xs);
-  max-width: 256px;
 }
 
 .userLink {
@@ -16,4 +15,8 @@
 .link {
   position: relative;
   @include mixins.underline();
+}
+
+.followers {
+  flex-wrap: wrap;
 }
