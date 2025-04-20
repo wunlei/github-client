@@ -2,9 +2,9 @@ import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 import Pagination from 'components/Pagination';
 import { useUserSearchPageStore } from 'store/UserSearchPageStore';
-import { ReposPaginationProps } from './ReposPagination.types';
+import { UsersPaginationProps } from './UsersPagination.types';
 
-const ReposPagination: React.FC<ReposPaginationProps> = observer(({ className, onChange }) => {
+const UsersPagination: React.FC<UsersPaginationProps> = observer(({ className, onChange }) => {
   const store = useUserSearchPageStore();
   const { totalPages, currPageNum, setCurrPage } = store.paginationStore;
 
@@ -16,4 +16,4 @@ const ReposPagination: React.FC<ReposPaginationProps> = observer(({ className, o
   return <Pagination className={className} count={totalPages} current={currPageNum} onChange={handlePageChange} />;
 });
 
-export default ReposPagination;
+export default UsersPagination;

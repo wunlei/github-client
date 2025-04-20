@@ -1,3 +1,3 @@
-export type ReposSearchProps = {
+export type UsersSearchProps = {
   onChange: (v: string) => void;
 };
