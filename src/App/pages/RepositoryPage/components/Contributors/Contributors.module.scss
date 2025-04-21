@@ -1,6 +1,8 @@
 @use "styles/mixins";
 
 .contributors {
+  width: 100%;
+  max-width: 310px;
   @include mixins.space-y(var(--space-xxs));
 }
 
@@ -27,4 +29,8 @@
 
 .btnShowMore {
   margin-top: var(--space-xxs);
+}
+
+.loginText {
+  @include mixins.space-x(var(--space-xxs));
 }

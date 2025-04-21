@@ -48,12 +48,14 @@ const Contributors: React.FC<ContributorsProps> = observer(({ owner, repo }) => 
             <li key={el.login}>
               <Link to={routes.user.create(el.login)} className={s.contributor}>
                 <Avatar type="round" src={el.avatarUrl} alt={el.login} />
-                <Typography view="p-16" weight="bold" tag="span">
-                  {el.login}
-                </Typography>
-                <Typography view="p-16" color="secondary" tag="span" className={s.name}>
-                  {el.name}
-                </Typography>
+                <span className={s.loginText}>
+                  <Typography view="p-16" weight="bold" tag="span">
+                    {el.login}
+                  </Typography>
+                  <Typography view="p-16" color="secondary" tag="span" className={s.name}>
+                    {el.name}
+                  </Typography>
+                </span>
               </Link>
             </li>
           ))}

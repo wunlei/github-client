@@ -64,12 +64,14 @@ const RepositoryPage: React.FC = observer(() => {
         </PageHeader>
 
         <div className={s.main}>
-          <a href={htmlUrl} className={s.link} target="_blank" rel="noreferrer">
+          <div className={s.link}>
             <ChainIcon />
             <Typography className={s.linkText} view="p-16" weight="bold">
-              {repo}
+              <a href={htmlUrl} target="_blank" rel="noreferrer">
+                {repo}
+              </a>
             </Typography>
-          </a>
+          </div>
           <Topics />
           <Stats />
           <div className={s.contentFooter}>

@@ -11,13 +11,13 @@ const UserStats: React.FC<UserStatsProps> = ({ followers, following, company, bl
   return (
     <div className={s.container}>
       {link && (
-        <a target="_blank" rel="noreferrer" href={link}>
-          <UserStatsItem type="link">
-            <Typography className={s.userLink} weight="bold">
+        <UserStatsItem type="link">
+          <Typography className={s.userLink} weight="bold">
+            <a target="_blank" rel="noreferrer" href={link}>
               {link}
-            </Typography>
-          </UserStatsItem>
-        </a>
+            </a>
+          </Typography>
+        </UserStatsItem>
       )}
       <UserStatsItem type="followers" classname={s.followers}>
         <Typography view="p-14">
@@ -28,7 +28,7 @@ const UserStats: React.FC<UserStatsProps> = ({ followers, following, company, bl
         </Typography>
         <Typography weight="bold" inline tag="span">
           {' · '}
-        </Typography>{' '}
+        </Typography>
         <Typography view="p-14">
           <Typography weight="bold" inline tag="span">
             {formatNumber(following)}
@@ -41,7 +41,6 @@ const UserStats: React.FC<UserStatsProps> = ({ followers, following, company, bl
 
       {blog && (
         <UserStatsItem type="link">
-          {' '}
           <Typography>
             <a target="_blank" rel="noreferrer" href={blog} className={s.link}>
               {blog}
