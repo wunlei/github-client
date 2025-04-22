@@ -5,4 +5,5 @@ export type UserStatsProps = {
   blog?: string;
   location: string | null;
   link?: string;
+  bio: string | null;
 };

@@ -66,6 +66,7 @@ export type UserApi = {
   followers: number;
   following: number;
   public_repos: number;
+  bio: string | null;
 };
 
 export type SearchUserApi = {

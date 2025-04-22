@@ -7,9 +7,10 @@ import Typography from 'components/Typography';
 import { formatNumber } from 'utils';
 import s from './UserStats.module.scss';
 
-const UserStats: React.FC<UserStatsProps> = ({ followers, following, company, blog, location, link }) => {
+const UserStats: React.FC<UserStatsProps> = ({ followers, following, company, blog, location, link, bio }) => {
   return (
     <div className={s.container}>
+      {bio && <Typography className={s.bio}>{bio}</Typography>}
       {link && (
         <UserStatsItem type="link">
           <Typography className={s.userLink} weight="bold">
