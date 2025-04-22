@@ -66,7 +66,7 @@ class RepositoryPageStore implements ILocalStore {
       if (response.success) {
         this._repoData = normalizeRepo(response.data);
         this.metaStore.updateMeta('success');
-        this.visitedReposStore.addRepo(this._repoData);
+        this.visitedReposStore.addRepoToLS(this._repoData);
       } else {
         this.metaStore.updateMeta('error', response.errorMessage);
       }

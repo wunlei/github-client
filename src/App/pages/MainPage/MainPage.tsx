@@ -13,6 +13,7 @@ import List from './components/List';
 import ReposPagination from './components/ReposPagination';
 import ReposSearch from './components/ReposSearch';
 import TypeDropdown from './components/TypesDropdown';
+import VisitedRepos from './components/VisitedRepos';
 import s from './MainPage.module.scss';
 
 const MainPage: React.FC = observer(() => {
@@ -24,7 +25,6 @@ const MainPage: React.FC = observer(() => {
 
   const { currPageItems } = store.paginationStore;
   const { isLoading, isError, isSuccess, isInitial, errorMessage } = store.metaStore;
-  const { data: visitedRepos } = store.visitedReposStore;
 
   const handleTypeChange = useCallback(
     (option: Option) => {
@@ -61,7 +61,6 @@ const MainPage: React.FC = observer(() => {
 
   useInitMainPage();
 
-  const showVisited = isInitial && visitedRepos.length > 0;
   const showRepos = isSuccess && !isInitial;
 
   return (
@@ -76,14 +75,7 @@ const MainPage: React.FC = observer(() => {
         </div>
         {isLoading && <Loader className={s.loader} />}
         {isError && <ErrorMsg message={errorMessage || ''} />}
-        {showVisited && (
-          <>
-            <Typography weight="bold" view="p-20" className={s.subtitle}>
-              Recently viewed repos:
-            </Typography>
-            <List repos={visitedRepos} />
-          </>
-        )}
+        <VisitedRepos />
         {showRepos && (
           <>
             <List repos={currPageItems} />
