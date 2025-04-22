@@ -18,7 +18,7 @@ const UserPage: React.FC = observer(() => {
 
   const store = useUserPageStore();
   const { data } = store;
-  const { isLoading, isError } = store.metaStore;
+  const { isLoading, isError, errorMessage } = store.metaStore;
 
   useInitUserPage();
 
@@ -39,7 +39,7 @@ const UserPage: React.FC = observer(() => {
   if (isError) {
     return (
       <PageLayout>
-        <ErrorMsg />
+        <ErrorMsg message={errorMessage || ''} />
       </PageLayout>
     );
   }
@@ -48,7 +48,7 @@ const UserPage: React.FC = observer(() => {
     return null;
   }
 
-  const { avatarUrl, login, name, blog, company, followers, following, location, htmlUrl } = data;
+  const { avatarUrl, login, name } = data;
 
   return (
     <PageLayout>
@@ -61,14 +61,7 @@ const UserPage: React.FC = observer(() => {
           </div>
         </PageHeader>
         <div className={s.main}>
-          <UserStats
-            followers={followers}
-            following={following}
-            blog={blog}
-            company={company}
-            location={location}
-            link={htmlUrl}
-          />
+          <UserStats {...data} />
         </div>
         <Repo username={username} />
       </div>
