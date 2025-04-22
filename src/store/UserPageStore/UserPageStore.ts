@@ -4,6 +4,7 @@ import MetaStore from 'store/MetaStore';
 import VisitedUsersStore from 'store/VisitedUsersStore';
 import { ILocalStore } from 'store/hooks/useLocalStoreApp';
 import { normalizeUser, UserModel } from 'store/models/api';
+import { normalizeUserLS } from 'store/models/ls/user';
 
 type PrivateFields = '_username' | '_data';
 
@@ -41,7 +42,7 @@ class UserPageStore implements ILocalStore {
       if (response.success) {
         this._data = normalizeUser(response.data);
         this.metaStore.updateMeta('success');
-        this.visitedUsersStore.addUser(this._data);
+        this.visitedUsersStore.addUser(normalizeUserLS(this._data));
       } else {
         this.metaStore.updateMeta('error', response.errorMessage);
       }

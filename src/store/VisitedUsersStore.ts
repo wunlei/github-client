@@ -2,13 +2,13 @@ import { action, computed, makeObservable, observable } from 'mobx';
 import { LS_KEY_USERS } from 'config/localStorage';
 import LocalStorageStore from 'store/LocalStorageStore';
 import { ILocalStore } from 'store/hooks/useLocalStoreApp';
-import { SearchUserModel } from 'store/models/api/searchUser';
+import { UserModelLS } from 'store/models/ls/user';
 
 type PrivateFields = '_data';
 
 class VisitedUsersStore implements ILocalStore {
-  private _data: SearchUserModel[] = [];
-  readonly lsStore = new LocalStorageStore<SearchUserModel[]>(LS_KEY_USERS);
+  private _data: UserModelLS[] = [];
+  readonly lsStore = new LocalStorageStore<UserModelLS[]>(LS_KEY_USERS);
 
   constructor() {
     makeObservable<VisitedUsersStore, PrivateFields>(this, {
@@ -29,9 +29,9 @@ class VisitedUsersStore implements ILocalStore {
     return this._data;
   }
 
-  addUser = (user: SearchUserModel) => {
+  addUser = (user: UserModelLS) => {
     const data = this.data;
-    if (data.some((el) => el.id === user.id)) {
+    if (data.some((el) => el.login === user.login)) {
       return;
     }
 
