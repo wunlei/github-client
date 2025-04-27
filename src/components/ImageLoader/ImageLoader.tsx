@@ -19,7 +19,7 @@ const ImageLoader: React.FC<ImageLoaderProps> = ({ src, alt, classname }) => {
     <>
       {!isLoaded && (
         <div className={s.loaderContainer}>
-          <Loader size="l" />
+          <Loader size="m" />
         </div>
       )}
 

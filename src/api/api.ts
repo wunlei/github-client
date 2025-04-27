@@ -27,6 +27,25 @@ export async function getSingleRepo({ repo, owner }: GetSingleRepoParams): Promi
   return axiosInstance.get(`/repos/${owner}/${repo}`);
 }
 
+export async function getRepos(repos: GetSingleRepoParams[]) {
+  const reposPromises = await Promise.all(repos.map((data) => getSingleRepo(data)));
+
+  const result: RepoApi[] = [];
+
+  reposPromises.forEach((repo) => {
+    if (repo.success) {
+      result.push(repo.data);
+    }
+  });
+
+  return {
+    success: true,
+    data: result,
+    errorMessage: null,
+    status: 200,
+  };
+}
+
 export async function getRepoLanguages({
   repo,
   owner,

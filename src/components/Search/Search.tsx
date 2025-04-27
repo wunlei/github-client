@@ -15,9 +15,14 @@ const Search: React.FC<SearchProps> = ({ value, placeholder, handleSearch }) => 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (e.target instanceof HTMLInputElement) {
-        handleSearch(e.target.value);
+        handleSearch(e.target.value.trim());
       }
     }
+  };
+
+  const handleReset = () => {
+    setInputValue('');
+    handleSearch('');
   };
 
   useEffect(() => {
@@ -33,12 +38,7 @@ const Search: React.FC<SearchProps> = ({ value, placeholder, handleSearch }) => 
         onChange={setInputValue}
         onKeyDown={handleEnter}
         afterSlot={
-          <InputButton
-            classname={c(s.btnClose, inputValue && s.btnCloseVisible)}
-            onClick={() => {
-              setInputValue('');
-            }}
-          >
+          <InputButton classname={c(s.btnClose, inputValue && s.btnCloseVisible)} onClick={handleReset}>
             <CrossIcon width={20} height={20} />
           </InputButton>
         }

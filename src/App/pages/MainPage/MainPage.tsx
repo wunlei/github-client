@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { useCallback } from 'react';
-import { useSearchParams } from 'react-router';
+import { useCallback, useEffect } from 'react';
+import { useLocation, useSearchParams } from 'react-router';
 import { Option } from 'components/Dropdown/Dropdown.types';
 import ErrorMsg from 'components/ErrorMsg';
 import Loader from 'components/Loader';
@@ -13,14 +13,18 @@ import List from './components/List';
 import ReposPagination from './components/ReposPagination';
 import ReposSearch from './components/ReposSearch';
 import TypeDropdown from './components/TypesDropdown';
+import VisitedRepos from './components/VisitedRepos';
 import s from './MainPage.module.scss';
 
 const MainPage: React.FC = observer(() => {
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const store = useMainPageStore();
 
+  const { reset } = store;
+
   const { currPageItems } = store.paginationStore;
-  const { isLoading, isError, isInitial, errorMessage } = store.metaStore;
+  const { isLoading, isError, isSuccess, isInitial, errorMessage } = store.metaStore;
 
   const handleTypeChange = useCallback(
     (option: Option) => {
@@ -38,7 +42,7 @@ const MainPage: React.FC = observer(() => {
     [searchParams, setSearchParams],
   );
 
-  const handleGetRepos = useCallback(
+  const handleOrgChange = useCallback(
     (org: string) => {
       searchParams.set('org', org.trim());
       if (searchParams.get('page')) {
@@ -49,9 +53,15 @@ const MainPage: React.FC = observer(() => {
     [searchParams, setSearchParams],
   );
 
+  useEffect(() => {
+    if (location.search == '' && location.key !== 'default') {
+      reset();
+    }
+  }, [reset, location.search, location.key]);
+
   useInitMainPage();
 
-  const showRepos = !isLoading && !isError && !isInitial;
+  const showRepos = isSuccess && !isInitial;
 
   return (
     <PageLayout className={s.page}>
@@ -61,10 +71,11 @@ const MainPage: React.FC = observer(() => {
         </Typography>
         <div className={s.filters}>
           <TypeDropdown className={s.dropdown} onChange={handleTypeChange} />
-          <ReposSearch onChange={handleGetRepos} />
+          <ReposSearch onChange={handleOrgChange} />
         </div>
         {isLoading && <Loader className={s.loader} />}
         {isError && <ErrorMsg message={errorMessage || ''} />}
+        <VisitedRepos />
         {showRepos && (
           <>
             <List repos={currPageItems} />

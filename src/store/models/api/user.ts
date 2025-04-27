@@ -12,6 +12,7 @@ export type UserModel = {
   followers: number;
   following: number;
   publicRepos: number;
+  bio: string | null;
 };
 
 export const normalizeUser = ({ avatar_url, html_url, public_repos, ...rest }: UserApi): UserModel => ({

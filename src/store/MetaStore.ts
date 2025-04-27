@@ -16,6 +16,7 @@ class MetaStore implements ILocalStore {
       isLoading: computed,
       isSuccess: computed,
       isInitial: computed,
+      errorMessage: computed,
       updateMeta: action,
       destroy: action,
     });

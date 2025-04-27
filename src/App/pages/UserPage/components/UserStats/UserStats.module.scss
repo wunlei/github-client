@@ -1,0 +1,26 @@
+@use "styles/mixins";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--space-xs);
+}
+
+.userLink {
+  position: relative;
+  color: var(--color-blue-200);
+  @include mixins.underline($color: var(--color-blue-200));
+}
+
+.link {
+  position: relative;
+  @include mixins.underline();
+}
+
+.followers {
+  flex-wrap: wrap;
+}
+
+.bio {
+  max-width: 440px;
+}

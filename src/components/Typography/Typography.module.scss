@@ -18,6 +18,9 @@
   @include mixins.media("sm") {
     font-size: 1.75em;
   }
+  @include mixins.media("mob") {
+    font-size: 1.25em;
+  }
 }
 
 .tag-h2 {
@@ -47,11 +50,17 @@
 
   @include mixins.media("md") {
     font-size: 32px;
-    line-height: 46px;
+    line-height: 36px;
   }
+
   @include mixins.media("sm") {
     font-size: 28px;
     line-height: 32px;
+  }
+
+  @include mixins.media("mob") {
+    font-size: 22px;
+    line-height: 26px;
   }
 }
 

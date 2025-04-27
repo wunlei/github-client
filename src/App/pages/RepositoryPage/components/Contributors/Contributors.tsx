@@ -1,10 +1,12 @@
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
+import { Link } from 'react-router';
 import Avatar from 'components/Avatar';
 import Button from 'components/Button';
 import Counter from 'components/Counter';
 import Skeleton from 'components/Skeleton';
 import Typography from 'components/Typography';
+import { routes } from 'config/router';
 import ContributorsStore from 'store/ContributorsStore';
 import { useLocalStoreApp } from 'store/hooks';
 import { ContributorsProps } from './Contributors.types';
@@ -44,15 +46,17 @@ const Contributors: React.FC<ContributorsProps> = observer(({ owner, repo }) => 
         <ul className={s.contributorList}>
           {visibleItems.map((el) => (
             <li key={el.login}>
-              <a href={el.htmlUrl} className={s.contributor} target="_blank" rel="noreferrer">
+              <Link to={routes.user.create(el.login)} className={s.contributor}>
                 <Avatar type="round" src={el.avatarUrl} alt={el.login} />
-                <Typography view="p-16" weight="bold" tag="span">
-                  {el.login}
-                </Typography>
-                <Typography view="p-16" color="secondary" tag="span" className={s.name}>
-                  {el.name}
-                </Typography>
-              </a>
+                <span className={s.loginText}>
+                  <Typography view="p-16" weight="bold" tag="span">
+                    {el.login}
+                  </Typography>
+                  <Typography view="p-16" color="secondary" tag="span" className={s.name}>
+                    {el.name}
+                  </Typography>
+                </span>
+              </Link>
             </li>
           ))}
         </ul>

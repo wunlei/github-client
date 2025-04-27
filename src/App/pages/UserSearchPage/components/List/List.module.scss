@@ -1,0 +1,45 @@
+@use "styles/mixins";
+
+.list {
+  display: grid;
+  flex-wrap: wrap;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 60px;
+  margin-top: 36px;
+
+  @include mixins.media("lg") {
+    gap: 30px;
+  }
+  @include mixins.media("md") {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @include mixins.media("mob") {
+    grid-template-columns: 100%;
+  }
+}
+
+.starIcon {
+  color: var(--color-orange);
+}
+
+.starsContainer {
+  display: flex;
+  align-items: center;
+}
+
+.cardHeader {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--space-s);
+}
+
+.listCard {
+  height: 100%;
+  @include mixins.media("xl") {
+    max-width: unset;
+  }
+}
+
+.errorMsg {
+  grid-column: span 3;
+}

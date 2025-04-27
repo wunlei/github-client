@@ -1,0 +1,21 @@
+@use "styles/mixins";
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  @include mixins.space-x(var(--space-m));
+}
+
+.headerDetails {
+  display: flex;
+  align-items: center;
+  @include mixins.space-x(var(--space-xxs));
+}
+
+.arrowBack {
+  transform: rotate(90deg);
+  &:hover {
+    color: var(--color-brand-hover);
+  }
+}

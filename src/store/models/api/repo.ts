@@ -30,16 +30,3 @@ export const normalizeRepo = (from: RepoApi): RepoModel => {
     forksCount: forks_count,
   };
 };
-
-export type LSRepoModel = Omit<RepoModel, 'updatedAt'> & {
-  updatedAt: string;
-};
-
-export const normalizeLSRepo = (from: LSRepoModel): RepoModel => {
-  const { updatedAt } = from;
-
-  return {
-    ...from,
-    updatedAt: new Date(updatedAt),
-  };
-};

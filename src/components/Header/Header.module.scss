@@ -1,3 +1,5 @@
+@use "styles/mixins";
+
 .header {
   border-bottom: 2px solid var(--color-gray-300);
   background-color: var(--color-gray-100);
@@ -5,8 +7,8 @@
 
 .content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: var(--space-l);
   width: 100%;
   max-width: 1240px;
   height: 64px;
@@ -17,5 +19,21 @@
 .logoContainer {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-xl);
+
+  @include mixins.media("sm") {
+    gap: var(--space-s);
+  }
+}
+
+.links {
+  @include mixins.space-x(var(--space-xs));
+}
+
+.link:hover {
+  color: var(--text-secondary);
+}
+
+.linkActive {
+  text-decoration: underline;
 }

@@ -1,6 +1,7 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { getReadme, getSingleRepo } from 'api';
 import MetaStore from 'store/MetaStore';
+import VisitedReposStore from 'store/VisitedReposStore';
 import { ILocalStore } from 'store/hooks';
 import { normalizeRepo, RepoModel } from 'store/models/api';
 
@@ -12,6 +13,7 @@ class RepositoryPageStore implements ILocalStore {
   private _repoData: RepoModel | null = null;
   private _readme: string | null = null;
   readonly metaStore = new MetaStore();
+  readonly visitedReposStore = new VisitedReposStore();
 
   constructor() {
     makeObservable<RepositoryPageStore, PrivateFields>(this, {
@@ -64,6 +66,7 @@ class RepositoryPageStore implements ILocalStore {
       if (response.success) {
         this._repoData = normalizeRepo(response.data);
         this.metaStore.updateMeta('success');
+        this.visitedReposStore.addRepoToLS(this._repoData);
       } else {
         this.metaStore.updateMeta('error', response.errorMessage);
       }
@@ -85,6 +88,7 @@ class RepositoryPageStore implements ILocalStore {
 
   destroy = (): void => {
     this.metaStore.destroy();
+    this.visitedReposStore.destroy();
     this._orgName = '';
     this._repoName = '';
     this._repoData = null;
